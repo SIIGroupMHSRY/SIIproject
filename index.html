@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="libraries/Leaflet.draw/dist/leaflet.draw.css" />
 	<link rel="stylesheet" href="libraries/MiniMap/fullscreen.css" />
 	<link rel="stylesheet" href="libraries/MiniMap/src/Control.MiniMap.css" />
-	<link rel="stylesheet" href="L.Control.Sidebar.css" />
+	<link rel="stylesheet" href="libraries/L.Control.Sidebar.css" />
 	
 	<script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
 	<script src="libraries/Leaflet.draw/dist/leaflet.draw.js" type="text/javascript"></script>
@@ -18,9 +18,10 @@
 	<script type='text/javascript' src="libraries/leaflet.almostover.js"></script>
 	<script src="libraries/jQuery.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="libraries/L.Control.Sidebar.js"></script>
 <!-- created style sheets and scripts-->
 <link href="libraries/bootstrap/css/bootstrap.css" rel="stylesheet">
-<script type="text/javascript" src="libraries/L.Control.Sidebar.js"></script>
+
 
 <style>
 #map { 
@@ -48,6 +49,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+		  		  <div style="position:absolute;left:30%;top:20%;"><button type="button" onclick="Query()">Query</button></div>
 		  <a class="navbar-brand" href="index.html">Accomodations</a>
         </div>
         <div class="collapse navbar-collapse">
@@ -58,10 +60,32 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
- <div id="map" style="position:absolute;left:25px; top:51px; width: 96%; height: 72%;">
+	
+<div class="container">
+ <div id="map" style="position:absolute;left:25px; top:51px; width: 96%; height: 72%;" >
  
+ <div id="sidebar"> 
+	<br> Choose the attributes, you want to use for the query:  
+	min. size:<input type="text" id="qsizemin"><br>
+	max. size:<input type="text" id="qsizemax"><br>
+	
+	min. price:<input type="text" id="qpricemin"><br>
+	max. price:<input type="text" id="qpricemax"><br>
+	
+	number of rooms:<input type="text" id="qrooms"><br>
+	zip code:<input type="text" id="qzip"><br>
+	
+	type:<br>
+	<input type="radio" id="qflat">flat<br>
+	<input type="radio" id="qfsc">flat-sharing-community<br>
+	
+	maximal number of fellow lodger:<input type="text" id="qmaxlodger"><br>
+	minimal number of fellow lodger:<input type="text" id="qminlodger"><br>
 
- 
+	<button type="button" onclick="queryattributes()">Submit</button>
+	<input TYPE="RESET" VALUE="Clear">
+</div>
+
 	<script>
 
 var map = L.map('map').setView([51.9604,7.6197], 14);
@@ -169,7 +193,18 @@ function onLocationError(e) {
     alert(e.message);
 }
 
+function Query(){
+	sidebar.show();	
+}
+
+function queryattributes(){
+	//name=document.getElementById('pointname').value;
+	startqueryattributes();
+}
+
 map.on('locationerror', onLocationError);
 	</script>
+</div>
+</div>
 	</body>
 	</html>
