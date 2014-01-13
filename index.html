@@ -8,10 +8,8 @@
     <link rel="stylesheet" href="libraries/Leaflet.draw/dist/leaflet.draw.css" />
 	<link rel="stylesheet" href="libraries/MiniMap/fullscreen.css" />
 	<link rel="stylesheet" href="libraries/MiniMap/src/Control.MiniMap.css" />
-<<<<<<< HEAD
-=======
+<!-- HEAD-->
 	<link rel="stylesheet" href="libraries/Measure/leaflet.measurecontrol.css" />
->>>>>>> 76eeaa1ab794f9c83dc9d903b42f8c253f289a1c
 	<link rel="stylesheet" href="libraries/L.Control.Sidebar.css" />
 	
 	<script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
@@ -59,7 +57,7 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-			<li class="active"><a href="#">Map</a></li>
+			<li onclick="alldata()" class="active"><a href="#">Map</a></li>
             <li onclick="Query()"><a href="#">Query</a></li>
 			<li><a href="#">Further links</a></li>
           </ul>
@@ -67,11 +65,11 @@
       </div>
     </div>
 
-//<<<<<<< HEAD	
+<!-- HEAD-->
 <div class="container">
  <div id="map" style="position:absolute;left:25px; top:51px; width: 96%; height: 80%;" >
  
-//<<<<<<< QUERY FORMULAR
+<!-- QUERY FORMULAR-->
  <div id="sidebar"> 
 	<br> <b><font size=4px>Choose the attributes, you want to use for the query:  </b></font>
 	<br>
@@ -136,12 +134,12 @@
 	<button type="button" onclick="queryclear()">Clear</button>
 	<br><br>
 </div>
-//=======
+
 </div>
  </div>
-//>>>>>>> 76eeaa1ab794f9c83dc9d903b42f8c253f289a1c
 
-<div style="position:absolute; top: 90%;">
+
+<!--<div style="position:absolute; top: 90%;">
 <FONT COLOR=WHITE>
 <table border='1'>
 <tr>
@@ -149,7 +147,7 @@
 <th>Lastname</th>
 </tr>
 </font>
-</div>
+</div>-->
 
  
 	<script>
@@ -189,6 +187,14 @@ $.ajax({
         url: geoJsonUrl, 
         dataType: 'jsonp' 
 }); 
+
+function alldata(data){
+var geoJsonUrl ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJson";
+$.ajax({ 
+        url: geoJsonUrl, 
+        dataType: 'jsonp' 
+}); 
+}
 
 
 var layer1=L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
@@ -298,27 +304,28 @@ function onLocationError(e) {
 }
 
 function initialvariables(){
-	qsizemin=0;
-	qsizemax=0;
-	qpricemin=0;
-	qpricemax=0;
-	qflats=0;
-	gfsc=0;
-	qmaxlodger=0;
-	qminlodger=0;
-	qmaxroom=0;
-	qminroom=0;
-	qzip=0;
+	qsizemin=-1;
+	qsizemax=-1;
+	qpricemin=-1;
+	qpricemax=-1;
+	qflats=-1;
+	gfsc=-1;
+	qmaxlodger=-1;
+	qminlodger=-1;
+	qmaxroom=-1;
+	qminroom=-1;
+	qzip=-1;
 }
 
 function Query(){
+	queryclear()
 	sidebar.show();	
 }
 
 function queryattributes(){
 	qsizemin=document.getElementById('qsizemin').value;
 	qsizemax=document.getElementById('qsizemax').value;
-	pricemin=document.getElementById('qpricemin').value;
+	qpricemin=document.getElementById('qpricemin').value;
 	qpricemax=document.getElementById('qpricemax').value;
 	if (document.getElementById('qflat').checked==true)
 		qflats=1;
@@ -327,15 +334,77 @@ function queryattributes(){
 	qmaxlodger=document.getElementById('qmaxlodger').value;
 	qminlodger=document.getElementById('qminlodger').value;
 	qmaxroom=document.getElementById('qmaxroom').value;
-	qminroom=document.getElementById('qmaxroom').value;
+	qminroom=document.getElementById('qminroom').value;
 	qzip=document.getElementById('qzip').value;
 	
-	var geoJsonquery ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&Filter=<Filter><PropertyIsGreaterThanOrEqualTo><PropertyName>price</PropertyName><Literal>"
-	geoJsonquery +=pricemin
+	var geoJsonquery ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&Filter=<Filter><And>"
+	if (qsizemin != ''){
+	geoJsonquery +="<PropertyIsGreaterThanOrEqualTo><PropertyName>area</PropertyName><Literal>"
+	geoJsonquery +=qsizemin
 	geoJsonquery +="</Literal></PropertyIsGreaterThanOrEqualTo>"
-	geoJsonquery +="And<PropertyIsGreaterThan><PropertyName>rooms</PropertyName><Literal>"
+	}
+	
+	if (qsizemax != ''){
+	geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>area</PropertyName><Literal>"
+	geoJsonquery +=qsizemax
+	geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
+	}
+	
+	if (qpricemin != ''){
+	geoJsonquery +="<PropertyIsGreaterThanOrEqualTo><PropertyName>price</PropertyName><Literal>"
+	geoJsonquery +=qpricemin
+	geoJsonquery +="</Literal></PropertyIsGreaterThanOrEqualTo>"
+	}
+	
+	if (qpricemax != ''){
+	geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>price</PropertyName><Literal>"
+	geoJsonquery +=qpricemax
+	geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
+	}
+	
+	//if (qflats == 1){
+	//geoJsonquery +="<PropertyIsEqualTo><PropertyName>price</PropertyName><Literal>"
+	//geoJsonquery +=qpricemax
+	//geoJsonquery +="</Literal></PropertyIsEqualTo>"
+	//}
+	
+	//if (qfsc == 1){
+	//geoJsonquery +="<PropertyIsEqualTo><PropertyName>price</PropertyName><Literal>"
+	//geoJsonquery +=qpricemax
+	//geoJsonquery +="</Literal></PropertyIsEqualTo>"
+	//}
+	
+	//if (qmaxlodger != ''){
+	//geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>price</PropertyName><Literal>"
+	//geoJsonquery +=qpricemax
+	//geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
+	//}
+	
+	//if (qminlodger != ''){
+	//geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>price</PropertyName><Literal>"
+	//geoJsonquery +=qpricemax
+	//geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
+	//}
+	
+	if(qminroom != ''){
+	geoJsonquery +="<PropertyIsGreaterThanOrEqualTo><PropertyName>rooms</PropertyName><Literal>"
 	geoJsonquery +=qminroom
-	geoJsonquery +="</Literal></PropertyIsGreaterThan></Filter>&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
+	geoJsonquery +="</Literal></PropertyIsGreaterThanOrEqualTo>"
+	}
+	
+	if(qmaxroom != ''){
+	geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>rooms</PropertyName><Literal>"
+	geoJsonquery +=qmaxroom
+	geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
+	}
+	
+	if(qzip != ''){
+	geoJsonquery +="<PropertyIsEqualTo><PropertyName>zip</PropertyName><Literal>"
+	geoJsonquery +=qzip
+	geoJsonquery +="</Literal></PropertyIsGreaterThanOrEqualTo>"
+	}
+	
+	geoJsonquery +="</And></Filter>&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
 	
 	$.ajax({ 
         url: geoJsonquery, 
