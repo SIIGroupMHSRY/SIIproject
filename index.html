@@ -26,7 +26,7 @@
 	<script type="text/javascript" src="libraries/L.Control.Sidebar.js"></script>
 <!-- created style sheets and scripts-->
 <link href="libraries/bootstrap/css/bootstrap.css" rel="stylesheet">
-
+<script type="text/javascript" src="libraries/L.Control.Sidebar.js"></script>
 
 <style>
 #map { 
@@ -41,7 +41,7 @@
         }
 
 </style>
-</head>
+<body>
 
 <body style="background-color:#000000">
 
@@ -54,56 +54,109 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-		  		  <div style="position:absolute;left:30%;top:20%;"><button type="button" onclick="Query()">Query</button></div>
+		  <!--<div style="position:absolute;left:30%;top:20%;"><button type="button" onclick="Query()">Query</button></div>-->
 		  <a class="navbar-brand" href="index.html">Accomodations</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Map</a></li>
-			 <li><a href="#" onclick = "ShowSidebar()" >Sidebar</a></li>
-            <li><a href="help.html">Help</a></li>
+			<li class="active"><a href="#">Map</a></li>
+            <li onclick="Query()"><a href="#">Query</a></li>
+			<li><a href="#">Further links</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
-	
-<<<<<<< HEAD
+
+//<<<<<<< HEAD	
 <div class="container">
- <div id="map" style="position:absolute;left:25px; top:51px; width: 96%; height: 72%;" >
+ <div id="map" style="position:absolute;left:25px; top:51px; width: 96%; height: 80%;" >
  
+//<<<<<<< QUERY FORMULAR
  <div id="sidebar"> 
-	<br> Choose the attributes, you want to use for the query:  
-	min. size:<input type="text" id="qsizemin"><br>
-	max. size:<input type="text" id="qsizemax"><br>
+	<br> <b><font size=4px>Choose the attributes, you want to use for the query:  </b></font>
+	<br>
 	
-	min. price:<input type="text" id="qpricemin"><br>
-	max. price:<input type="text" id="qpricemax"><br>
+	<div style="padding-top:10px">
+	<b><font size=3px> size in m<sup>2</sup><b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+			min. : &nbsp <input type="text" style="width: 70px" id="qsizemin">&nbsp&nbsp&nbsp&nbsp
+			max. : &nbsp <input type="text" style="width: 70px" id="qsizemax"> 
+	</div>
+
+	<div style="padding-top:15px">
+	<b><font size=3px> price in &#8364;</b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+		min. :&nbsp <input type="text" style="width: 70px" id="qpricemin">&nbsp&nbsp&nbsp&nbsp
+		max. :&nbsp <input type="text" style="width: 70px" id="qpricemax"><br>
+	</div>
 	
-	number of rooms:<input type="text" id="qrooms"><br>
-	zip code:<input type="text" id="qzip"><br>
+	<div style="padding-top:15px">
+	<b><font size=3px>type</b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+		<input type="radio" id="qflat">&nbsp flat &nbsp&nbsp&nbsp&nbsp
+		<input type="radio" id="qfsc"> &nbsp flat-sharing-community
+	</div>
 	
-	type:<br>
-	<input type="radio" id="qflat">flat<br>
-	<input type="radio" id="qfsc">flat-sharing-community<br>
+	<div style="padding-top:15px">
+	<b><font size=3px>number of fellow lodger</b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+		min. : &nbsp <input type="text" style="width: 70px" id="qminlodger">  &nbsp&nbsp&nbsp&nbsp
+		max. :&nbsp <input type="text" style="width: 70px" id="qmaxlodger">
+	</div>
+
+	<div style="padding-top:15px">
+	<b><font size=3px>number of rooms</b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+		 min. : &nbsp <input type="text" style="width: 70px" id="qminroom">&nbsp&nbsp&nbsp&nbsp
+		 max. :&nbsp <input type="text" style="width: 70px" id="qmaxroom">
+	</div>
 	
-	maximal number of fellow lodger:<input type="text" id="qmaxlodger"><br>
-	minimal number of fellow lodger:<input type="text" id="qminlodger"><br>
+	<br>
+	<div style="padding-top:10px">
+		zip code: &nbsp <input type="text" id="qzip">
+	</div>
+	<br>
 
 	<button type="button" onclick="queryattributes()">Submit</button>
-	<input TYPE="RESET" VALUE="Clear">
+	<button type="button" onclick="queryclear()">Clear</button>
+	<br><br>
 </div>
-=======
-	<div id="sidebar">
-		<h1>welcome to our accommodation website</h1>
-	</div>
- <div id="map" style="position:absolute;left:25px; top:51px; width: 99%; height: 72%;">
+//=======
+</div>
  </div>
->>>>>>> 76eeaa1ab794f9c83dc9d903b42f8c253f289a1c
+//>>>>>>> 76eeaa1ab794f9c83dc9d903b42f8c253f289a1c
 
+<div style="position:absolute; top: 90%;">
+<FONT COLOR=WHITE>
+<table border='1'>
+<tr>
+<th>Firstname</th>
+<th>Lastname</th>
+</tr>
+</font>
+</div>
+
+ 
 	<script>
-
+//create map
 var map = L.map('map').setView([51.9604,7.6197], 14);
-//sidebare
+
+//sidebar
 var sidebar = L.control.sidebar('sidebar', {
     position: 'right'
 });
@@ -114,6 +167,30 @@ function ShowSidebar()
 sidebar.show();
 }
 //
+
+//Adding WFS Layer by JSON Format
+
+	var myLayer = new L.geoJson(null,{
+onEachFeature: function 
+(feature, layer) 
+{
+layer.bindPopup("Street:"+feature.properties.Street+
+"<br>Rooms:"+feature.properties.rooms
+);} 
+}).addTo(map);
+
+
+function loadGeoJson(data) {
+myLayer.addData(data); 
+}
+
+var geoJsonUrl ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJson";
+$.ajax({ 
+        url: geoJsonUrl, 
+        dataType: 'jsonp' 
+}); 
+
+
 var layer1=L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
 +' contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,'
@@ -123,7 +200,7 @@ var layer1=L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D
 
 layer1.addTo(map);
 
-//create map
+
 
 
 		
@@ -191,10 +268,11 @@ var control=L.control.layers(baseMaps,overlapMaps,{position:'bottomleft'}).addTo
 //miniMap
 	var osm2 = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 13, attribution: osmAttrib });
 	var miniMap = new L.Control.MiniMap(osm2, { toggleDisplay: true }).addTo(map);
-	
-	//measure Control 
-	L.Control.measureControl().addTo(map);
 
+//measure Control 
+	L.Control.measureControl().addTo(map);
+	
+	
 //drawing tool
 var drawControl = new L.Control.Draw({
 
@@ -219,13 +297,71 @@ function onLocationError(e) {
     alert(e.message);
 }
 
+function initialvariables(){
+	qsizemin=0;
+	qsizemax=0;
+	qpricemin=0;
+	qpricemax=0;
+	qflats=0;
+	gfsc=0;
+	qmaxlodger=0;
+	qminlodger=0;
+	qmaxroom=0;
+	qminroom=0;
+	qzip=0;
+}
+
 function Query(){
 	sidebar.show();	
 }
 
 function queryattributes(){
-	//name=document.getElementById('pointname').value;
-	startqueryattributes();
+	qsizemin=document.getElementById('qsizemin').value;
+	qsizemax=document.getElementById('qsizemax').value;
+	pricemin=document.getElementById('qpricemin').value;
+	qpricemax=document.getElementById('qpricemax').value;
+	if (document.getElementById('qflat').checked==true)
+		qflats=1;
+	if (document.getElementById('qfsc').checked==true)
+		gfsc=1;
+	qmaxlodger=document.getElementById('qmaxlodger').value;
+	qminlodger=document.getElementById('qminlodger').value;
+	qmaxroom=document.getElementById('qmaxroom').value;
+	qminroom=document.getElementById('qmaxroom').value;
+	qzip=document.getElementById('qzip').value;
+	
+	var geoJsonquery ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&Filter=<Filter><PropertyIsGreaterThanOrEqualTo><PropertyName>price</PropertyName><Literal>"
+	geoJsonquery +=pricemin
+	geoJsonquery +="</Literal></PropertyIsGreaterThanOrEqualTo>"
+	geoJsonquery +="And<PropertyIsGreaterThan><PropertyName>rooms</PropertyName><Literal>"
+	geoJsonquery +=qminroom
+	geoJsonquery +="</Literal></PropertyIsGreaterThan></Filter>&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
+	
+	$.ajax({ 
+        url: geoJsonquery, 
+        dataType: 'jsonp' 
+}); 
+}
+
+function loadGeoJsonQuery(data) {
+myLayer.clearLayers();
+myLayer.addData(data);
+}
+
+function queryclear(){
+	document.getElementById('qsizemin').value='';
+	document.getElementById('qsizemax').value='';
+	document.getElementById('qpricemin').value='';
+	document.getElementById('qpricemax').value='';
+	document.getElementById('qflat').checked=false;
+	document.getElementById('qfsc').checked=false;
+	document.getElementById('qmaxlodger').value='';
+	document.getElementById('qminlodger').value='';
+	document.getElementById('qmaxroom').value='';
+	document.getElementById('qminroom').value='';
+	document.getElementById('qzip').value='';
+	
+	initialvariables()
 }
 
 map.on('locationerror', onLocationError);
