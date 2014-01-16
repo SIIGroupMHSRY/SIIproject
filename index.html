@@ -26,6 +26,13 @@
 <link href="libraries/bootstrap/css/bootstrap.css" rel="stylesheet">
 <script type="text/javascript" src="libraries/L.Control.Sidebar.js"></script>
 
+
+
+ <script src="dist/leaflet.awesome-markers.js"></script>
+ <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" rel="stylesheet">
+  <link rel="stylesheet" href="dist/leaflet.awesome-markers.css">
+
+
 <style>
 #map { 
             position: absolute;
@@ -184,10 +191,48 @@ map.addControl(AddAccomodationsidebar);
 onEachFeature: function 
 (feature, layer) 
 {
+
 layer.bindPopup("Street:"+feature.properties.Street+
 "<br>Rooms:"+feature.properties.rooms
-);} 
+);},
+
+
+ pointToLayer: function(feature, latlng) {
+        return new L.marker(latlng, {icon: L.AwesomeMarkers.icon({icon: 'home', prefix: 'fa', markerColor: 'green', spin:false}) });
+		return new L.CircleMarker(latlng, {radius: 10, fillOpacity: 0.85});
+    },
+
+
+ 
 }).addTo(map);
+
+
+
+
+
+
+
+
+
+
+
+/*
+L.geoJson(geoJson, {
+    pointToLayer: function (feature, latlng) {
+        return L.marker(latlng, 
+            {icon: L.AwesomeMarkers.icon({icon: 'spinner', prefix: 'fa', markerColor: 'red', spin:true})};
+    }
+
+	
+	}).addTo(map);
+
+
+*/
+
+
+
+
+
 
 
 function loadGeoJson(data) {
@@ -337,7 +382,7 @@ map.locate({setView: true, maxZoom: 16});
 function onLocationFound(e) {
     var radius = e.accuracy / 2;
 
-    L.marker(e.latlng).addTo(map)
+    L.marker(e.latlng,{icon: L.AwesomeMarkers.icon({icon: 'spinner', prefix: 'fa', markerColor: 'red', spin:true}) }).addTo(map)
         .bindPopup("You are within " + radius + " meters from this point. Do you want to start a query with this location?").openPopup();
 
     L.circle(e.latlng, radius).addTo(map);
@@ -492,6 +537,16 @@ function InvokeMarker(Coord){
 	new L.Draw.Marker(map, drawControl.options.marker).enable( )// to invoke draw Marker command 
 }
 //-------------------------
+
+
+
+
+ L.marker([51.960133,7.607246], {icon: L.AwesomeMarkers.icon({icon: 'spinner', prefix: 'fa', markerColor: 'red', spin:true}) }).addTo(map);
+
+
+
+
+
 	</script>
 </div>
 </div>
