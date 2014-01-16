@@ -344,13 +344,25 @@ map.addLayer(drawnItems);
 		L.drawLocal.draw.toolbar.buttons.marker = 'Add New Accommodation';
 
 // Initialise the draw control and pass it the FeatureGroup of editable layers
+
+
+
+
+
+
+
+
+
+
+
 var drawControl = new L.Control.Draw({
     
 	draw: {
 			polyline: false,
 			polygon:false,
 			rectangle:false,
-			circle:false
+			circle:false,
+			marker:{icon: L.AwesomeMarkers.icon({icon: 'home', prefix: 'fa', markerColor: 'blue', spin:false})},
 			},
 	
 	edit: {
@@ -537,6 +549,7 @@ function InvokeMarker(Coord){
 	new L.Draw.Marker(map, drawControl.options.marker).enable( )// to invoke draw Marker command 
 }
 //-------------------------
+
 
 
 
