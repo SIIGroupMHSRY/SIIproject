@@ -59,6 +59,8 @@
           <ul class="nav navbar-nav">
 			<li onclick="alldata()" class="active"><a href="#">Map</a></li>
             <li onclick="Query()"><a href="#">Query</a></li>
+			<li onclick="InvokeMarker()"><a href="#">New Accommodation</a></li>
+			
 			<li><a href="#">Further links</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -69,6 +71,9 @@
 <div class="container">
  <div id="map" style="position:absolute;left:25px; top:51px; width: 96%; height: 80%;" >
  
+  <div id="AddAccomodationsidebar"> 
+	<div id="NewAccomationCoordinates"></div>
+  </div>
 <!-- QUERY FORMULAR-->
  <div id="sidebar"> 
 	<br> <b><font size=4px>Choose the attributes, you want to use for the query:  </b></font>
@@ -164,6 +169,13 @@ function ShowSidebar()
 {
 sidebar.show();
 }
+
+var AddAccomodationsidebar = L.control.sidebar('AddAccomodationsidebar', {
+    position: 'right'
+});
+
+map.addControl(AddAccomodationsidebar);
+
 //
 
 //Adding WFS Layer by JSON Format
@@ -280,9 +292,43 @@ var control=L.control.layers(baseMaps,overlapMaps,{position:'bottomleft'}).addTo
 	
 	
 //drawing tool
-var drawControl = new L.Control.Draw({
+// Initialise the FeatureGroup to store editable layers
+var drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+// Set the title to show on the polygon button
+		L.drawLocal.draw.toolbar.buttons.marker = 'Add New Accommodation';
 
-		}).addTo(map);
+// Initialise the draw control and pass it the FeatureGroup of editable layers
+var drawControl = new L.Control.Draw({
+    
+	draw: {
+			polyline: false,
+			polygon:false,
+			rectangle:false,
+			circle:false
+			},
+	
+	edit: {
+        featureGroup: drawnItems
+    }
+});
+map.addControl(drawControl);
+
+map.on('draw:created', function (e) {
+    var type = e.layerType,
+        layer = e.layer;
+
+    if (type === 'marker') {
+        // Do marker specific actions
+		var coordinates = layer.toGeoJSON().geometry.coordinates;
+				var coord=coordinates.toString();
+				AddAccomod(coord);
+    }
+
+    // Do whatever else you need to. (save to db, add to map etc)
+    map.addLayer(layer);
+});
+
 
 	
 //getlocation
@@ -434,6 +480,18 @@ function queryclear(){
 }
 
 map.on('locationerror', onLocationError);
+
+//-----------------------
+function AddAccomod(Coord){
+	AddAccomodationsidebar.show();
+	$.get( "AddNewAccomodation.php?Coord="+Coord, function( data ) {
+	document.getElementById('NewAccomationCoordinates').innerHTML = data;
+	});
+}
+function InvokeMarker(Coord){
+	new L.Draw.Marker(map, drawControl.options.marker).enable( )// to invoke draw Marker command 
+}
+//-------------------------
 	</script>
 </div>
 </div>
