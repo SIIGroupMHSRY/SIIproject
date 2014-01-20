@@ -65,7 +65,9 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
 			<li onclick="alldata()" class="active"><a href="#">Map</a></li>
-            <li onclick="Query()"><a href="#">Query</a></li>
+            <li onclick="Query()"><a href="#">Filter by attributes</a></li>
+			<li onclick="Querylocation()"><a href="#">Filter by location</a></li>
+			<li onclick="mylocation()"><a href="#">Get my location</a></li>
 			<li onclick="InvokeMarker()"><a href="#">New Accommodation</a></li>
 			
 			<li><a href="#">Further links</a></li>
@@ -174,16 +176,14 @@
  
  
 
+<div id="sidebarqlocation"> 
+<button type="button" onclick="submitquerylocation()">Submit</button>
+</div>
 
-<!--<div style="position:absolute; top: 90%;">
-<FONT COLOR=WHITE>
-<table border='1'>
-<tr>
-<th>Firstname</th>
-<th>Lastname</th>
-</tr>
-</font>
-</div>-->
+<div style="position:absolute; top: 90%;" id="divtable">
+<font color=WHITE>
+test<br>test<br>test</font>
+</div>
 
  
 	<script>
@@ -198,7 +198,10 @@ var sidebar = L.control.sidebar('sidebar', {
 //sidebar_detail
 var sidebar_detail = L.control.sidebar('sidebar_detail', {
     position: 'right'
-});
+
+
+
+
 
 map.addControl(sidebar);
 map.addControl(sidebar_detail);
@@ -436,6 +439,19 @@ map.on('draw:created', function (e) {
 //getlocation
 map.locate({setView: true, maxZoom: 16});
 
+function mylocation()
+{
+navigator.geolocation.getCurrentPosition(GetLocation)
+}
+
+function GetLocation(location){
+lat=location.coords.latitude;
+lon=location.coords.longitude;
+	
+	alert(lat);
+	alert(lon);
+}
+
 function onLocationFound(e) {
     var radius = e.accuracy / 2;
 
@@ -443,6 +459,11 @@ function onLocationFound(e) {
         .bindPopup("You are within " + radius + " meters from this point. Do you want to start a query with this location?").openPopup();
 
     L.circle(e.latlng, radius).addTo(map);
+	
+	lat=e.coords.latitude;
+	lon=e.coords.longitude;
+	
+	alert(lat,lon);
 }
 
 map.on('locationfound', onLocationFound);
@@ -466,7 +487,7 @@ function initialvariables(){
 }
 
 function Query(){
-	queryclear()
+	queryclear();
 	sidebar.show();	
 }
 
@@ -549,7 +570,7 @@ function queryattributes(){
 	if(qzip != ''){
 	geoJsonquery +="<PropertyIsEqualTo><PropertyName>zip</PropertyName><Literal>"
 	geoJsonquery +=qzip
-	geoJsonquery +="</Literal></PropertyIsGreaterThanOrEqualTo>"
+	geoJsonquery +="</Literal></PropertyIsEqualTo>"
 	}
 	
 	geoJsonquery +="</And></Filter>&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
@@ -560,9 +581,21 @@ function queryattributes(){
 }); 
 }
 
+function onEachFeaturequery(feature, layer){
+document.getElementById('divtable').innerHTML = '<tr><td>feature.properties.Street</td><td>feature.properties.rooms</td></tr>';
+}
+
 function loadGeoJsonQuery(data) {
 myLayer.clearLayers();
 myLayer.addData(data);
+
+//document.getElementById('divtable').innerHTML = '<table bordercolor=WHITE><Font color=WHITE>';
+//document.getElementById('divtable').innerHTML = '<tr><td>test</td><td>test</td></tr>';
+//onEachFeaturequery(myLayer.feature, myLayer.layer);
+
+//document.getElementById('divtable').innerHTML = '</font></table>';
+
+
 }
 
 function queryclear(){
@@ -579,6 +612,28 @@ function queryclear(){
 	document.getElementById('qzip').value='';
 	
 	initialvariables()
+}
+
+function Querylocation(){
+	sidebarqlocation.show();	
+}
+
+function submitquerylocation(){
+	
+var geoJsonUrl ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&"
+geoJsonUrl +="<Filter><DWithin><PropertyName>the_geom</PropertyName><gml:Point><gml:coordinates>"
+geoJsonUrl +=lat
+geoJsonUrl +=","
+geoJsonUrl +=lon
+geoJsonUrl +="</gml:coordinates></gml:Point><Distance units='km'>5</Distance></DWithin></Filter>"
+geoJsonUrl +="&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
+
+alert(geoJsonUrl);
+
+$.ajax({ 
+        url: geoJsonUrl, 
+        dataType: 'jsonp' 
+}); 
 }
 
 map.on('locationerror', onLocationError);
