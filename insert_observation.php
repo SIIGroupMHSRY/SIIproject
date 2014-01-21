@@ -17,7 +17,18 @@
 		
 	</head>
 <body>
+<?php 
+$coords = $_GET['coordinate'];
+$latitude = "";
+$longitude = "";
+	
+if($coords != null || $coords != "")	{
+	$coordinates = explode(",", $coords);
+	$latitude = $coordinates[0];
+	$longitude = $coordinates[1];
+}
 
+?>
 
 <form name="form" action="submit.php" method="get">
 	
@@ -33,7 +44,7 @@
 				Latitude: 				
 			</td>
 			<td width="250px">				
-				<input type="text" id="obsLatitude" name="obsLatitude"><br>				
+				<input type="text" id="obsLatitude" name="obsLatitude" value="<?php echo($latitude)?>"><br>				
 			</td>		
 		</tr>
 		
@@ -42,9 +53,10 @@
 				Longitude:				
 			</td>
 			<td>
-				<input type="text" id="obsLongitude" name="obsLongitude"><br>
+				<input type="text" id="obsLongitude" name="obsLongitude" value="<?php echo($longitude)?>"><br>
 			</td>			
 		</tr>
+		<!--
 		<tr>
 			<td align="right">
 				Accuracy:				
@@ -53,6 +65,7 @@
 				<input type="text" id="obsAccuracy" name="obsAccuracy"><br>
 			</td>			
 		</tr>
+		-->
 		
 		<tr>
 			<td align="right">				
@@ -82,28 +95,19 @@
 		
 		<tr>
 			<td align="right">
-				Rent: 				
-			</td>
-			<td>
-				<input type="text" id="obsRent" name="obsRent"><br>
-			</td>
-		</tr>
-		
-		<tr>
-			<td align="right">
-				Room(s): 				
-			</td>
-			<td>
-				<input type="text" id="obsNoOfRoom" name="obsNoOfRoom"><br>
-			</td>
-		</tr>
-		
-		<tr>
-			<td align="right">
 				Area: 				
 			</td>
 			<td>
 				<input type="text" id="obsArea" name="obsArea"><br>
+			</td>
+		</tr>
+		
+		<tr>
+			<td align="right">
+				Rent: 				
+			</td>
+			<td>
+				<input type="text" id="obsRent" name="obsRent"><br>
 			</td>
 		</tr>
 		
@@ -123,6 +127,15 @@
 			</td>
 			<td>
 				<input type="text" id="obsFellowLodger" name="obsFellowLodger"><br>
+			</td>
+		</tr>
+		
+		<tr>
+			<td align="right">
+				No. of Room(s): 				
+			</td>
+			<td>
+				<input type="text" id="obsNoOfRoom" name="obsNoOfRoom"><br>
 			</td>
 		</tr>
 		

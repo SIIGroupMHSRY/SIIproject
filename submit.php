@@ -50,10 +50,8 @@
 		$roomtype = $_GET["obsType"];
 		$fellowLodger = $_GET["obsFellowLodger"];
 		$information = $_GET["obsInformation"];
-      
-	  print("room type" . $roomtype);
-	  print("<br>");
-	  
+		$movedate = '2014-02-14';
+		
       //  This is the XML part that will be sent to the server. Please change where needed, according to the 
       //  GetCapabilities response of your WFS, your database schema, etc.
 	  //  
@@ -61,26 +59,24 @@
 	  //  replace wobs2 with the name of your PostGIS layer and group00ws with the name of your workspace
       $query_string = '<wfs:Transaction xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		<wfs:Insert>
-			<feature:flats xmlns:feature="group10ws">
+			<feature:flats xmlns:feature="group10ws">			
 			<feature:Street>'.$street.'</feature:Street>
 			<feature:zip>'.$zip.'</feature:zip>
 			<feature:city>'.$city.'</feature:city>
 			<feature:price>'.$rent.'</feature:price>
 			<feature:rooms>'.$room.'</feature:rooms>
 			<feature:area>'.$area.'</feature:area>
-			<feature:type>'.$roomtype.'</feature:type>
-			<feature:fellowlodger>'.$fellowLodger.'</feature:fellowlodger>
 			<feature:information>'.$information.'</feature:information>
 			<feature:the_geom>
 				<gml:Point xmlns:gml="http://www.opengis.net/gml" srsName="EPSG:4326">
 					<gml:coordinates>'.$longitude.','.$latitude.'</gml:coordinates>
 				</gml:Point>
-			</feature:the_geom>
-			<feature:coords>
-				<gml:Point xmlns:gml="http://www.opengis.net/gml" srsName="EPSG:4326">
-					<gml:coordinates>'.$longitude.','.$latitude.'</gml:coordinates>
-				</gml:Point>
-			</feature:coords>
+			</feature:the_geom>			
+			<feature:type>'.$roomtype.'</feature:type>
+			<feature:fellowlodger>'.$fellowLodger.'</feature:fellowlodger>
+			<feature:movein_date>'.$movedate.'</feature:movein_date>
+			<feature:Lat>'.$latitude.'</feature:Lat>
+			<feature:Long>'.$longitude.'</feature:Long>
 		</feature:flats>
 	</wfs:Insert>
 	</wfs:Transaction>';

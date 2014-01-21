@@ -65,7 +65,8 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
 			<li onclick="alldata()" class="active"><a href="#">Map</a></li>
-			<li onclick="Observation()"><a href="#">Add room(s)</a></li>
+			<!--<li onclick="Observation()"><a href="#">Add room(s)</a></li>-->
+			<li onclick="InvokeMarker()"><a href="#">Add room(s)</a></li>
             <li onclick="Query()"><a href="#">Filter by attributes</a></li>
 			<li onclick="Querylocation()"><a href="#">Filter by location</a></li>
 			<li onclick="mylocation()"><a href="#">Get my location</a></li>
@@ -85,90 +86,10 @@
 	<div id="NewAccomationCoordinates"></div>
   </div>
   
- <!-- Observation sidebar -->
-<form name="obsForm" id="obsForm" action="submit.php" method="get">
- <div id="observation_sidebar"> 
-	<br> <b><font size=4px>Enter details for room(s):  </b></font>
-	<br>
-	
-	<div style="padding-top:10px">
-	<b><font size=3px> Location details (auto-generated):<b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-			Latitude : &nbsp <input type="text" style="width: 70px" id="obsLatitude" name="obsLatitude">&nbsp&nbsp&nbsp&nbsp
-			Longitude : &nbsp <input type="text" style="width: 70px" id="obsLongitude" name="obsLongitude"> <br><br>
-			Accuracy : &nbsp <input type="text" style="width: 70px" id="obsAccuracy" name="obsAccuracy">
-	</div>
-
-	<div style="padding-top:15px">
-	<b><font size=3px> Address Details</b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-		Street :&nbsp <input type="text" style="width: 70px" id="obsStreet" name="obsStreet">&nbsp&nbsp&nbsp&nbsp
-		Zip :&nbsp;<input type="text" style="width: 70px" id="obsZip" name="obsZip"><br><br>
-		City :&nbsp;&nbsp;&nbsp; <input type="text" style="width: 70px" id="obsCity" name="obsCity">&nbsp&nbsp&nbsp&nbsp
-		Area :&nbsp <input type="text" style="width: 70px" id="obsArea" name="obsArea"><br><br>
-	</div>
-	<div style="padding-top:15px">
-		<b><font size=3px> Rent in &#8364;</b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-		&nbsp <input type="text" style="width: 70px" id="obsRent" name="obsRent"><br>
-	</div>
-	
-	<div style="padding-top:15px">
-	<b><font size=3px>Type</b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-		<input type="radio" id="obsType" name="obsType">&nbsp flat &nbsp&nbsp&nbsp&nbsp
-		<input type="radio" id="obsType" name="obsType"> &nbsp flat-sharing-community
-	</div>
-	
-	<div style="padding-top:15px">
-	<b><font size=3px>Number of fellow lodger</b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-		<input type="text" style="width: 70px" id="obsFellowLodger">		
-	</div>
-
-	<div style="padding-top:15px">
-	<b><font size=3px>Number of rooms</b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-		 &nbsp <input type="text" style="width: 70px" id="obsNoOfRoom" name="obsNoOfRoom">		 
-	</div>
-	
-	<div style="padding-top:15px">
-	<b><font size=3px>Other information</b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-		 <textarea style="width: 250px" rows="4" cols="30" id="obsInformation" name="obsInformation"></textarea>
-	</div>
-	
-	<br>
-	<button type="button" onclick="addRoomDetails()">Submit</button>
-	<button type="button" onclick="queryclear()">Clear</button>
-	<br><br>
-</div>
-
-</div>
- </div>
-</form>
-
+  <div id="InsertObservationSidebar">
+	<div id="coordinateValues"></div>
+  </div>
+  
 <!-- QUERY FORMULAR-->
  <div id="sidebar"> 
 	<br> <b><font size=4px>Choose the attributes, you want to use for the query:  </b></font>
@@ -281,16 +202,19 @@ var AddAccomodationsidebar = L.control.sidebar('AddAccomodationsidebar', {
     position: 'right'
 });
 
+var insertObservationSidebar = L.control.sidebar('InsertObservationSidebar', {position: 'right'});
+
 //observation sidebar
-var obs_sidebar = L.control.sidebar('observation_sidebar', {
-    position: 'right'
-});
+//var obs_sidebar = L.control.sidebar('observation_sidebar', {
+  //  position: 'right'
+//});
 
 map.addControl(sidebar);
 map.addControl(sidebar_detail);
 map.addControl(sidebarqlocation);
 map.addControl(AddAccomodationsidebar);
-map.addControl(obs_sidebar);
+map.addControl(insertObservationSidebar);
+//map.addControl(obs_sidebar);
 
 function ShowSidebar()
 {
@@ -486,8 +410,10 @@ map.on('draw:created', function (e) {
     if (type === 'marker') {
         // Do marker specific actions
 		var coordinates = layer.toGeoJSON().geometry.coordinates;
-				var coord=coordinates.toString();
-				AddAccomod(coord);
+		var coord = coordinates.toString();
+				
+		InsertObservation(coord);
+		//AddAccomod(coord);
     }
 
     // Do whatever else you need to. (save to db, add to map etc)
@@ -705,6 +631,15 @@ function AddAccomod(Coord){
 	document.getElementById('NewAccomationCoordinates').innerHTML = data;
 	});
 }
+
+function InsertObservation(coordinate)	{
+	insertObservationSidebar.show();
+	$.get( "insert_observation.php?coordinate=" + coordinate, function( data ) {
+		document.getElementById('coordinateValues').innerHTML = data;
+	});
+}
+
+
 function InvokeMarker(Coord){
 	new L.Draw.Marker(map, drawControl.options.marker).enable( )// to invoke draw Marker command 
 }
