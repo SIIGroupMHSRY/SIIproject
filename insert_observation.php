@@ -116,8 +116,8 @@ if($coords != null || $coords != "")	{
 				Room Type: 				
 			</td>
 			<td>
-				<input type="radio" id="obsType" name="obsType" value="Flat">
-				<input type="radio" id="obsType" name="obsType" value="Sharing">
+				<input type="radio" id="obsType" name="obsType" value="Flat">Flat
+				<input type="radio" id="obsType" name="obsType" value="WG">WG
 			</td>
 		</tr>
 		
@@ -136,6 +136,15 @@ if($coords != null || $coords != "")	{
 			</td>
 			<td>
 				<input type="text" id="obsNoOfRoom" name="obsNoOfRoom"><br>
+			</td>
+		</tr>
+		
+		<tr>
+			<td align="right">
+				Move-in date: 				
+			</td>
+			<td>
+				<input type="text" id="obsDate" name="obsDate"> YYYY-MM-DD<br>
 			</td>
 		</tr>
 		

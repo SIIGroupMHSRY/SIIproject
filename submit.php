@@ -50,7 +50,7 @@
 		$roomtype = $_GET["obsType"];
 		$fellowLodger = $_GET["obsFellowLodger"];
 		$information = $_GET["obsInformation"];
-		$movedate = '2014-02-14';
+		$movedate = $_GET["obsDate"];
 		
       //  This is the XML part that will be sent to the server. Please change where needed, according to the 
       //  GetCapabilities response of your WFS, your database schema, etc.
