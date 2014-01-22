@@ -173,10 +173,6 @@
 <button type="button" onclick="submitquerylocation()">Submit</button>
 </div>
 
-<div style="position:absolute; top: 90%;" id="divtable">
-<font color=WHITE>
-test<br>test<br>test</font>
-</div>
 <script>
 
 //create map
@@ -446,10 +442,9 @@ function onLocationFound(e) {
 
     L.circle(e.latlng, radius).addTo(map);
 	
-	lat=e.coords.latitude;
-	lon=e.coords.longitude;
+	latown=e.coords.latitude;
+	lonown=e.coords.longitude;
 	
-	alert(lat,lon);
 }
 
 map.on('locationfound', onLocationFound);
@@ -561,6 +556,8 @@ function queryattributes(){
 	
 	geoJsonquery +="</And></Filter>&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
 	
+	alert(geoJsonUrl);
+	
 	$.ajax({ 
         url: geoJsonquery, 
         dataType: 'jsonp' 
@@ -572,15 +569,9 @@ document.getElementById('divtable').innerHTML = '<tr><td>feature.properties.Stre
 }
 
 function loadGeoJsonQuery(data) {
+alert("geht3")
 myLayer.clearLayers();
 myLayer.addData(data);
-
-//document.getElementById('divtable').innerHTML = '<table bordercolor=WHITE><Font color=WHITE>';
-//document.getElementById('divtable').innerHTML = '<tr><td>test</td><td>test</td></tr>';
-//onEachFeaturequery(myLayer.feature, myLayer.layer);
-
-//document.getElementById('divtable').innerHTML = '</font></table>';
-
 
 }
 
@@ -606,8 +597,8 @@ function Querylocation(){
 
 function submitquerylocation(){
 	
-var geoJsonUrl ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&"
-geoJsonUrl +="<Filter><DWithin><PropertyName>the_geom</PropertyName><gml:Point><gml:coordinates>"
+var geoJsonUrl ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&srsname=EPSG:32632&"
+geoJsonUrl +="Filter=<Filter><DWithin><PropertyName>the_geom</PropertyName><gml:Point><gml:coordinates>"
 geoJsonUrl +=lat
 geoJsonUrl +=","
 geoJsonUrl +=lon
@@ -620,6 +611,9 @@ $.ajax({
         url: geoJsonUrl, 
         dataType: 'jsonp' 
 }); 
+alert("geht")
+
+
 }
 
 map.on('locationerror', onLocationError);
