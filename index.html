@@ -442,8 +442,8 @@ function onLocationFound(e) {
 
     L.circle(e.latlng, radius).addTo(map);
 	
-	latown=e.coords.latitude;
-	lonown=e.coords.longitude;
+	lat=e.coords.latitude;
+	lon=e.coords.longitude;
 	
 }
 
@@ -569,7 +569,6 @@ document.getElementById('divtable').innerHTML = '<tr><td>feature.properties.Stre
 }
 
 function loadGeoJsonQuery(data) {
-alert("geht3")
 myLayer.clearLayers();
 myLayer.addData(data);
 
@@ -596,22 +595,24 @@ function Querylocation(){
 }
 
 function submitquerylocation(){
-	
-var geoJsonUrl ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&srsname=EPSG:32632&"
-geoJsonUrl +="Filter=<Filter><DWithin><PropertyName>the_geom</PropertyName><gml:Point><gml:coordinates>"
-geoJsonUrl +=lat
-geoJsonUrl +=","
+		
+var geoJsonUrl ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&"
+geoJsonUrl +="Filter=<Filter xmlns=\"http://www.opengis.net/ogc\"  xmlns:gml=\"http://www.opengis.net/gml\"><DWithin><PropertyName>the_geom</PropertyName><gml:Point><gml:coordinates>"
 geoJsonUrl +=lon
-geoJsonUrl +="</gml:coordinates></gml:Point><Distance units='km'>5</Distance></DWithin></Filter>"
+geoJsonUrl +=","
+geoJsonUrl +=lat
+geoJsonUrl +="</gml:coordinates></gml:Point><Distance units='km'>3</Distance></DWithin></Filter>"
 geoJsonUrl +="&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
 
-alert(geoJsonUrl);
+alert(geoJsonUrl)
 
 $.ajax({ 
         url: geoJsonUrl, 
         dataType: 'jsonp' 
 }); 
-alert("geht")
+
+
+
 
 
 }
