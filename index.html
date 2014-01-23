@@ -70,7 +70,7 @@
             <li onclick="Query()"><a href="#">Filter by attributes</a></li>
 			<li onclick="Querylocation()"><a href="#">Filter by location</a></li>
 			<li onclick="mylocation()"><a href="#">Get my location</a></li>
-			<li onclick="InvokeMarker()"><a href="#">New Accommodation</a></li>
+			<!--<li onclick="InvokeMarker()"><a href="#">New Accommodation</a></li>-->
 			
 			<li><a href="#">Further links</a></li>
           </ul>
@@ -90,6 +90,97 @@
 	<div id="coordinateValues"></div>
   </div>
   
+ <!-- Observation sidebar -->
+
+ <div id="observation_sidebar"> 
+	<br> <b><font size=4px>Enter room details:  </b></font>
+	<br>
+	
+	<div style="padding-top:10px">
+	<b><font size=3px> Location details (auto-generated):<b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+			Latitude : &nbsp <input type="text" style="width: 70px" id="obsLatitude" name="obsLatitude">&nbsp&nbsp&nbsp&nbsp
+			Longitude : &nbsp <input type="text" style="width: 70px" id="obsLongitude" name="obsLongitude"><br>
+	</div>
+
+	<div style="padding-top:15px">
+	<b><font size=3px> Address Details</b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+		Street :&nbsp <input type="text" style="width: 70px" id="obsStreet" name="obsStreet">&nbsp&nbsp&nbsp&nbsp
+		Zip :&nbsp;<input type="text" style="width: 70px" id="obsZip" name="obsZip"><br><br>
+		City :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" style="width: 70px" id="obsCity" name="obsCity">
+		Area :&nbsp <input type="text" style="width: 70px" id="obsArea" name="obsArea"><br>
+	</div>
+	<div style="padding-top:15px">
+		<b><font size=3px> Rent in &#8364;</b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+		&nbsp <input type="text" style="width: 70px" id="obsRent" name="obsRent"><br>
+	</div>
+	
+	<div style="padding-top:15px">
+	<b><font size=3px>Type</b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+		<input type="radio" id="obsType" name="obsType" value="Flat">&nbsp;Flat &nbsp;&nbsp;
+		<input type="radio" id="obsType" name="obsType" value="WG">&nbsp;WG
+	</div>
+	
+	<div style="padding-top:15px">
+	<b><font size=3px>Number of fellow lodger</b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+		<input type="text" style="width: 70px" id="obsFellowLodger" name="obsFellowLodger">		
+	</div>
+
+	<div style="padding-top:15px">
+	<b><font size=3px>Number of rooms</b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+		 &nbsp <input type="text" style="width: 70px" id="obsNoOfRoom" name="obsNoOfRoom">		 
+	</div>
+	
+	<div style="padding-top:15px">
+		<b><font size=3px>Move-in date</b></font>
+		</div>
+		<div style="border: thin solid #000000; border-bottom-width: 0px;">
+		</div>
+		<div style="padding-top:10px">
+		 &nbsp <input type="text" style="width: 70px" id="obsDate" name="obsDate"><font size=2> &nbsp;(YYYY-MM-DD)</b></font>		 
+	</div>
+	
+	<div style="padding-top:15px">
+	<b><font size=3px>Other information</b></font>
+	</div>
+	<div style="border: thin solid #000000; border-bottom-width: 0px;">
+	</div>
+	<div style="padding-top:10px">
+		 <textarea style="width: 250px" rows="4" cols="30" id="obsInformation" name="obsInformation"></textarea>
+	</div>
+	
+	<br>
+	<button type="button" onclick="clearRoomDetails()">Clear</button>	
+	<button type="button" onclick="addRoomDetails()">Submit</button>	
+	<br><br>
+</div>
+
+</div>
+ </div>
+</form>
 <!-- QUERY FORMULAR-->
  <div id="sidebar"> 
 	<br> <b><font size=4px>Choose the attributes, you want to use for the query:  </b></font>
@@ -201,16 +292,16 @@ var AddAccomodationsidebar = L.control.sidebar('AddAccomodationsidebar', {
 var insertObservationSidebar = L.control.sidebar('InsertObservationSidebar', {position: 'right'});
 
 //observation sidebar
-//var obs_sidebar = L.control.sidebar('observation_sidebar', {
-  //  position: 'right'
-//});
+var obs_sidebar = L.control.sidebar('observation_sidebar', {
+    position: 'right'
+});
 
 map.addControl(sidebar);
 map.addControl(sidebar_detail);
 map.addControl(sidebarqlocation);
 map.addControl(AddAccomodationsidebar);
 map.addControl(insertObservationSidebar);
-//map.addControl(obs_sidebar);
+map.addControl(obs_sidebar);
 
 function ShowSidebar()
 {
@@ -628,10 +719,18 @@ function AddAccomod(Coord){
 }
 
 function InsertObservation(coordinate)	{
-	insertObservationSidebar.show();
-	$.get( "insert_observation.php?coordinate=" + coordinate, function( data ) {
-		document.getElementById('coordinateValues').innerHTML = data;
-	});
+	//insertObservationSidebar.show();	
+	
+	obs_sidebar.show();		
+	var index = coordinate.indexOf(",");	
+	document.getElementById("obsLatitude").value = coordinate.substring(0,index); 
+	document.getElementById("obsLongitude").value = coordinate.substring(index+1);
+	
+	
+	//$.get( "insert_observation.php?coordinate=" + coordinate, function( data ) {
+		//document.getElementById('coordinateValues').innerHTML = data;
+	//});
+
 }
 
 
@@ -642,8 +741,9 @@ function InvokeMarker(Coord){
 
 
 function Observation(){
-	//queryclear();
-	
+/*
+
+
 	alert('yes');
 	
 	obs_sidebar.show();	
@@ -652,9 +752,54 @@ function Observation(){
 	document.getElementById('obsLatitude').value = document.getElementById('lat').value;
 	alert('obslat');
 	alert(document.getElementById('obsLatitude').value);
+	*/
 }
 
+function addRoomDetails()	{		
+					
+	var getUrl = "submit.php?";
+	getUrl += "obsLatitude=" + document.getElementById("obsLatitude").value + "&";				
+	getUrl += "obsLongitude=" + document.getElementById("obsLongitude").value + "&";				
+	getUrl += "obsStreet=" + document.getElementById("obsStreet").value + "&";				
+	getUrl += "obsZip=" + document.getElementById("obsZip").value + "&";
+	getUrl += "obsCity=" + document.getElementById("obsCity").value + "&";
+	getUrl += "obsArea=" + document.getElementById("obsArea").value + "&";
+	getUrl += "obsRent=" + document.getElementById("obsRent").value + "&";
+	getUrl += "obsType=" + document.getElementById("obsType").value + "&";
+	getUrl += "obsFellowLodger=" + document.getElementById("obsFellowLodger").value + "&";
+	getUrl += "obsNoOfRoom=" + document.getElementById("obsNoOfRoom").value + "&";
+	getUrl += "obsDate=" + document.getElementById("obsDate").value + "&";				
+	getUrl += "obsInformation=" + document.getElementById("obsInformation").value;
+				
+	$.ajax({					
+		type: "GET",
+		url: getUrl,					
+		data: { }
+	}).done(function( msg ) {					
+					
+		msg = msg.toLowerCase();
+		if(msg.indexOf("success") != -1)
+			alert("Data saved succesfully");
+		else
+			alert("Error saving data");
+	});
+}
 
+function clearRoomDetails()	{
+	
+	document.getElementById("obsLatitude").value = '';
+	document.getElementById("obsLongitude").value = '';
+	document.getElementById("obsStreet").value = '';
+	document.getElementById("obsZip").value = '';
+	document.getElementById("obsCity").value = '';
+	document.getElementById("obsArea").value = '';
+	document.getElementById("obsRent").value = '';
+	//document.getElementById("obsType").value = '';
+	document.getElementById("obsFellowLodger").value = '';
+	document.getElementById("obsNoOfRoom").value = '';
+	document.getElementById("obsDate").value = '';
+	document.getElementById("obsInformation").value = '';
+}
 
 
 
