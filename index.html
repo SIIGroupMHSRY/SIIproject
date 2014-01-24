@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css">
+<link rel="stylesheet" href="libraries/leaflet-0.7/leaflet.css" />
     <link rel="stylesheet" href="libraries/Leaflet.draw/dist/leaflet.draw.css" />
 	<link rel="stylesheet" href="libraries/MiniMap/fullscreen.css" />
 	<link rel="stylesheet" href="libraries/MiniMap/src/Control.MiniMap.css" />
@@ -46,6 +46,35 @@
         }
 
 </style>
+ <style type="text/css">
+        #qsizemin {
+            width: 60px;
+        }
+        #qpricemin {
+            width: 60px;
+        }
+        #qminlodger {
+            width: 60px;
+        }
+        #qsizemax {
+            width: 60px;
+        }
+        #qpricemax {
+            width: 60px;
+        }
+        #qmaxlodger {
+            width: 60px;
+        }
+        #qminroom {
+            width: 60px;
+        }
+        #qzip {
+            width: 60px;
+        }
+        #qmaxroom {
+            width: 60px;
+        }
+    </style>
 <body>
 
 <body style="background-color:#000000">
@@ -67,7 +96,7 @@
 			<li onclick="alldata()" class="active"><a href="#">Map</a></li>
 			<!--<li onclick="Observation()"><a href="#">Add room(s)</a></li>-->
 			<li onclick="InvokeMarker()"><a href="#">Add room(s)</a></li>
-            <li onclick="Query()"><a href="#">Filter by attributes</a></li>
+            <li onclick="Query()"><a href="#">Search For Accommodation</a></li>
 			<li onclick="Querylocation()"><a href="#">Filter by location</a></li>
 			<li onclick="mylocation()"><a href="#">Get my location</a></li>
 			<!--<li onclick="InvokeMarker()"><a href="#">New Accommodation</a></li>-->
@@ -183,68 +212,106 @@
 </form>
 <!-- QUERY FORMULAR-->
  <div id="sidebar"> 
-	<br> <b><font size=4px>Choose the attributes, you want to use for the query:  </b></font>
-	<br>
-	
-	<div style="padding-top:10px">
-	<b><font size=3px> size in m<sup>2</sup><b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-			min. : &nbsp <input type="text" style="width: 70px" id="qsizemin">&nbsp&nbsp&nbsp&nbsp
-			max. : &nbsp <input type="text" style="width: 70px" id="qsizemax"> 
-	</div>
-
-	<div style="padding-top:15px">
-	<b><font size=3px> price in &#8364;</b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-		min. :&nbsp <input type="text" style="width: 70px" id="qpricemin">&nbsp&nbsp&nbsp&nbsp
-		max. :&nbsp <input type="text" style="width: 70px" id="qpricemax"><br>
-	</div>
-	
-	<div style="padding-top:15px">
-	<b><font size=3px>type</b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-		<input type="radio" id="qflat">&nbsp flat &nbsp&nbsp&nbsp&nbsp
-		<input type="radio" id="qfsc"> &nbsp flat-sharing-community
-	</div>
-	
-	<div style="padding-top:15px">
-	<b><font size=3px>number of fellow lodger</b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-		min. : &nbsp <input type="text" style="width: 70px" id="qminlodger">  &nbsp&nbsp&nbsp&nbsp
-		max. :&nbsp <input type="text" style="width: 70px" id="qmaxlodger">
-	</div>
-
-	<div style="padding-top:15px">
-	<b><font size=3px>number of rooms</b></font>
-	</div>
-	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
-	<div style="padding-top:10px">
-		 min. : &nbsp <input type="text" style="width: 70px" id="qminroom">&nbsp&nbsp&nbsp&nbsp
-		 max. :&nbsp <input type="text" style="width: 70px" id="qmaxroom">
-	</div>
-	
-	<br>
-	<div style="padding-top:10px">
-		zip code: &nbsp <input type="text" id="qzip">
-	</div>
-	<br>
-
-	<button type="button" onclick="queryattributes()">Submit</button>
-	<button type="button" onclick="queryclear()">Clear</button>
-	<br><br>
+	<p>
+			<span style="color: #3366ff;"><strong><span style="font-size: medium;">Search For Accommodation</span></strong></span><img alt="" src="libraries/Images/Search3.png" style="width: 100px; height: 100px" /></p>
+	<div style="padding-top: 10px;">
+			<table border="0">
+				<tbody>
+					<tr>
+						<td style="text-align: left;">
+							<strong>
+							<span style="color: #3366ff; ">size in m</span><span style="color: #3366ff; font-size: small;"><sup>2</sup></span></strong></td>
+						<td>
+							<strong>Min</strong></td>
+						<td>
+							&nbsp;<input id="qsizemin" type="text" /></td>
+						<td>
+							<strong>Max</strong></td>
+						<td>
+							<input id="qsizemax" type="text" /></td>
+					</tr>
+					<tr>
+						<td style="text-align: left;" colspan="5">
+							&nbsp;</td>
+					</tr>
+					<tr>
+						<td style="text-align: left;">
+							<span style="color: #3366ff; "><strong>price in &euro;</strong></span></td>
+						<td>
+							&nbsp;<strong>Min</strong></td>
+						<td>
+							&nbsp;<input id="qpricemin" type="text" /></td>
+						<td>
+							&nbsp;<strong>Max</strong></td>
+						<td>
+							<input id="qpricemax" type="text" /></td>
+					</tr>
+					<tr>
+						<td style="text-align: left;" class="auto-style1" colspan="5">
+							</td>
+					</tr>
+					<tr>
+						<td style="text-align: left;">
+							<span style="color: #3366ff; "><strong>Type</strong></span></td>
+						<td>
+							&nbsp;</td>
+						<td>
+							&nbsp;<strong><input id="qflat" type="radio" />Flat</strong></td>
+						<td colspan="2">
+							&nbsp;<input id="qfsc" type="radio" /><strong>&nbsp;flat-sharing</strong></td>
+					</tr>
+					<tr>
+						<td style="text-align: left;" colspan="5">
+							&nbsp;</td>
+					</tr>
+					<tr>
+						<td style="text-align: left;">
+							<span style="color: #3366ff; "><strong>Number of fellow lodger</strong></span></td>
+						<td>
+							<strong>Min</strong></td>
+						<td>
+							&nbsp;<input id="qminlodger" type="text" /></td>
+						<td>
+							&nbsp;<strong>Max</strong></td>
+						<td>
+							<input id="qmaxlodger" type="text" /></td>
+					</tr>
+					<tr>
+						<td style="text-align: left;" colspan="5">
+							&nbsp;</td>
+					</tr>
+					<tr>
+						<td style="text-align: left;">
+							<span style="color: #3366ff; "><strong>Number of Rooms</strong></span></td>
+						<td>
+							&nbsp;<strong>Min</strong></td>
+						<td>
+							<input id="qminroom" type="text" /></td>
+						<td>
+							&nbsp;<strong>Max</strong></td>
+						<td>
+							&nbsp;<input id="qmaxroom" type="text" /></td>
+					</tr>
+					<tr>
+						<td style="text-align: left;" colspan="5">
+							&nbsp;</td>
+					</tr>
+					<tr>
+						<td style="text-align: left;">
+							<span style="color: #3366ff; font-size: small;">&nbsp;</span><span style="color: #3366ff; "><strong>Zip Code:</strong></span></td>
+						<td>
+							&nbsp;</td>
+						<td colspan="2">
+							<input id="qzip" type="text" /></td>
+						<td>
+							&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<p>
+			<button onclick="queryattributes()" type="button">Submit</button><button onclick="queryclear()" type="button">Clear</button><br />
+			</p>
 </div>
 
 </div>
@@ -482,11 +549,7 @@ var drawControl = new L.Control.Draw({
 			rectangle:false,
 			circle:false,
 			marker:{icon: L.AwesomeMarkers.icon({icon: 'home', prefix: 'fa', markerColor: 'blue', spin:false})},
-			},
-	
-	edit: {
-        featureGroup: drawnItems
-    }
+			}
 });
 map.addControl(drawControl);
 
