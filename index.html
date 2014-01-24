@@ -752,9 +752,9 @@ function submitquerylocation(){
 		
 var geoJsonUrl ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&"
 geoJsonUrl +="Filter=<Filter xmlns=\"http://www.opengis.net/ogc\"  xmlns:gml=\"http://www.opengis.net/gml\"><DWithin><PropertyName>the_geom</PropertyName><gml:Point><gml:coordinates>"
-geoJsonUrl +=lon
-geoJsonUrl +=","
 geoJsonUrl +=lat
+geoJsonUrl +=","
+geoJsonUrl +=lon
 geoJsonUrl +="</gml:coordinates></gml:Point><Distance units='km'>3</Distance></DWithin></Filter>"
 geoJsonUrl +="&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
 
