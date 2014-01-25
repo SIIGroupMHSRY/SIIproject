@@ -76,6 +76,11 @@
             width: 60px;
         }
     </style>
+
+	
+<meta charset="utf-8">
+<title>Find your new living place</title>
+</head>
 <body>
 
 <body style="background-color:#000000">
@@ -326,28 +331,56 @@
 
 <form>
   <fieldset>
-    <legend>Adress</legend>
+    <legend>Address</legend>
     <table>
       <tr>
-        <td>Street:</td>
-        <td><div id="comment"> </div></td>
+        <td><b>Street:</b></td>
+        <td><div id="street"> </div></td>
       </tr><tr>
-        <td>Ihr Zuname:</td>
-        <td><input type="text" size="40" maxlength="40" name="Zuname"></td>
+        <td><b>Zip:</b></td>
+        <td><div id="zip"> </div></td>
+      </tr><tr>
+        <td><b>City:</b></td>
+        <td><div id="city"> </div></td>
       </tr>
     </table>
   </fieldset>
   <fieldset>
-    <legend>Wunsch</legend>
+    <legend>Description</legend>
     <table>
       <tr>
-        <td>Ihr Hauptwunsch:</td>
-        <td><input type="text" size="40" maxlength="40" name="Hauptwunsch"></td>
+        <td><b>Type:</b></td>
+        <td><div id="type"> </div></td>
       </tr><tr>
-        <td>Ihr Zusatzwunsch:</td>
-        <td><input type="text" size="40" maxlength="40" name="Zusatzwunsch"></td>
+        <td><b>Price:[ € ]</b></td>
+        <td><div id="price"> </div></td>
+      </tr><tr>
+        <td><b>Size:[ m² ]</b></td>
+        <td><div id="area"> </div></td>
+      </tr><tr>
+        <td><b>Rooms:</b></td>
+        <td><div id="rooms"> </div></td>
+      </tr><tr>
+        <td><b>Fellow lodger:</b></td>
+        <td><div id="fellowlodger"> </div></td>
+      </tr><tr>
+        <td><b>Available:</b></td>
+        <td><div id="moveindate"> </div></td>
       </tr>
     </table>
+  </fieldset>
+  <fieldset>
+    <legend>Additional Information</legend>
+    <table>
+	<tr>
+        <td><b>Information:</b></td>
+        <td><div id="information"> </div></td>
+      </tr><tr>
+        <td><b>Contacts:</b></td>
+        <td><div id="contacts"> Tel: 0000/0000</div></td>
+		<td><div id="contacts2"> Test@Test.de</div></td>
+      </tr>
+	  </table>
   </fieldset>
 </form>
 	
@@ -704,29 +737,35 @@ function clearRoomDetails()	{
 
 // function for the sidebar to display more details
 
+ 
+
+
+
 
 function MyFunction(name){
+
+
+alert(name);
 var array = name.split(',')
-alert(array);
-//document.getElementById("comment").innerHTML="feature.properties.id";
-document.getElementById("comment").innerHTML=array[1];
+alert(array[9]);
+var street_space=array[10].replace(/_/g, ' ');
+
+var information_space=array[6].replace(/_/g, ' ');
+
+document.getElementById("street").innerHTML=street_space;
+document.getElementById("zip").innerHTML=array[3];
+document.getElementById("city").innerHTML=array[2];
+document.getElementById("type").innerHTML=array[7];
+document.getElementById("price").innerHTML=array[0];
+document.getElementById("rooms").innerHTML=array[4];
+document.getElementById("area").innerHTML=array[5];
+document.getElementById("fellowlodger").innerHTML=array[8];
+document.getElementById("moveindate").innerHTML=array[9];
+document.getElementById("information").innerHTML=information_space;
 
 
 
-/*
-var myLayer = new L.geoJson(null,{
-onEachFeature: function 
-(feature, layer) 
-{ 
-alert(id);
-document.getElementById("comment").innerHTML="feature.properties.id";
-if (feature.properties.area=20){
-	document.getElementById("comment").innerHTML="feature.properties.id";
-	alert(id);}
-
-},
-}).addTo(map);*/
-sidebar_detail.toggle();
+sidebar_detail.show();
  
 }
 
@@ -746,9 +785,14 @@ onEachFeature: function
 //'<br>Rooms:'+feature.properties.rooms+'<br><a onclick="MyFunction()">See details</a>'
 
 
+var information=feature.properties.information.replace(/ /g, '_');
+var information2=information.replace(/,/g, ';');
+var Street=feature.properties.Street.replace(/ /g, '_');
+var movein2=feature.properties.movein_date.toString();
+var movein = movein2.substr(0, movein2.length-1); 
 
 layer.bindPopup('Street:'+feature.properties.Street+
-'<br>Rooms:'+feature.properties.rooms+'<br>Price:'+feature.properties.price+'<br>Available from:'+feature.properties.movein_date+'<br><a name='+'{'+feature.properties.price+','+feature.properties.id+','+feature.properties.city+'} onclick="MyFunction(name)">See details</a>'
+'<br>Rooms:'+feature.properties.rooms+'<br>Type:'+feature.properties.type+'<br>Price:'+feature.properties.price+'<br>Available from:'+feature.properties.movein_date+'<br><a name='+feature.properties.price+','+feature.properties.id+','+feature.properties.city+','+feature.properties.zip+','+feature.properties.rooms+','+feature.properties.area+','+information2+','+feature.properties.type+','+feature.properties.fellowlodger+','+movein+','+Street+' onclick="MyFunction(name)">See details</a>'
 
 );
 
