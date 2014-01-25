@@ -328,7 +328,6 @@
 <!-- Flat Details Sidebar-->
  <div id="sidebar_detail"> 
 <h2>Accomodation details:</h2>
-
 <form>
   <fieldset>
     <legend>Address</legend>
@@ -382,6 +381,7 @@
       </tr>
 	  </table>
   </fieldset>
+   
 </form>
 	
 	
@@ -740,14 +740,14 @@ function clearRoomDetails()	{
  
 
 
-
+// get the data from an point from the each feature function and display it in the sidebar
 
 function MyFunction(name){
 
 
-alert(name);
+//alert(name);
 var array = name.split(',')
-alert(array[9]);
+
 var street_space=array[10].replace(/_/g, ' ');
 
 var information_space=array[6].replace(/_/g, ' ');
@@ -792,7 +792,7 @@ var movein2=feature.properties.movein_date.toString();
 var movein = movein2.substr(0, movein2.length-1); 
 
 layer.bindPopup('Street:'+feature.properties.Street+
-'<br>Rooms:'+feature.properties.rooms+'<br>Type:'+feature.properties.type+'<br>Price:'+feature.properties.price+'<br>Available from:'+feature.properties.movein_date+'<br><a name='+feature.properties.price+','+feature.properties.id+','+feature.properties.city+','+feature.properties.zip+','+feature.properties.rooms+','+feature.properties.area+','+information2+','+feature.properties.type+','+feature.properties.fellowlodger+','+movein+','+Street+' onclick="MyFunction(name)">See details</a>'
+'<br>Rooms:'+feature.properties.rooms+'<br>Type:'+feature.properties.type+'<br>Price:'+feature.properties.price+'<br>Available from:'+movein+'<br><a name='+feature.properties.price+','+feature.properties.id+','+feature.properties.city+','+feature.properties.zip+','+feature.properties.rooms+','+feature.properties.area+','+information2+','+feature.properties.type+','+feature.properties.fellowlodger+','+movein+','+Street+' onclick="MyFunction(name)">See details</a>'
 
 );
 
