@@ -108,6 +108,7 @@
           <ul class="nav navbar-nav">
 			<li onclick="alldata()" class="active"><a href="#">Map</a></li>
 			<!--<li onclick="Observation()"><a href="#">Add room(s)</a></li>-->
+			<li onclick="alldata()"><a href="#">Show all</a></li>
 			<li onclick="InvokeMarker()"><a href="#">Add room(s)</a></li>
             <li onclick="Query()"><a href="#">Search For Accommodation</a></li>
 			<li onclick="Querylocation()"><a href="#">Filter by location</a></li>
@@ -585,29 +586,25 @@ function queryattributes(){
 	geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
 	}
 	
-	//if (qflats == 1){
-	//geoJsonquery +="<PropertyIsEqualTo><PropertyName>price</PropertyName><Literal>"
-	//geoJsonquery +=qpricemax
-	//geoJsonquery +="</Literal></PropertyIsEqualTo>"
-	//}
+	if (qflats == 1){
+	geoJsonquery +="<PropertyIsEqualTo><PropertyName>type</PropertyName><Literal>Flat</Literal></PropertyIsEqualTo>"
+	}
 	
-	//if (qfsc == 1){
-	//geoJsonquery +="<PropertyIsEqualTo><PropertyName>price</PropertyName><Literal>"
-	//geoJsonquery +=qpricemax
-	//geoJsonquery +="</Literal></PropertyIsEqualTo>"
-	//}
+	if (qfsc == 1){
+	geoJsonquery +="<PropertyIsEqualTo><PropertyName>type</PropertyName><Literal>WG</Literal></PropertyIsEqualTo>"
+	}
 	
-	//if (qmaxlodger != ''){
-	//geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>price</PropertyName><Literal>"
-	//geoJsonquery +=qpricemax
-	//geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
-	//}
+	if (qmaxlodger != ''){
+	geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>fellowlodger</PropertyName><Literal>"
+	geoJsonquery +=qmaxlodger
+	geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
+	}
 	
-	//if (qminlodger != ''){
-	//geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>price</PropertyName><Literal>"
-	//geoJsonquery +=qpricemax
-	//geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
-	//}
+	if (qminlodger != ''){
+	geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>fellowlodger</PropertyName><Literal>"
+	geoJsonquery +=qminlodger
+	geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
+	}
 	
 	if(qminroom != ''){
 	geoJsonquery +="<PropertyIsGreaterThanOrEqualTo><PropertyName>rooms</PropertyName><Literal>"
@@ -629,7 +626,6 @@ function queryattributes(){
 	
 	geoJsonquery +="</And></Filter>&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
 	
-	alert(geoJsonUrl);
 	
 	$.ajax({ 
         url: geoJsonquery, 
@@ -725,7 +721,6 @@ geoJsonUrl +=lon
 geoJsonUrl +="</gml:coordinates></gml:Point><Distance units='km'>3</Distance></DWithin></Filter>"
 geoJsonUrl +="&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";*/
 
-alert(geoJsonUrl)
 
 $.ajax({ 
         url: geoJsonUrl, 
@@ -1133,8 +1128,6 @@ function GetLocation(location){
 lat=location.coords.latitude;
 lon=location.coords.longitude;
 	
-	alert(lat);
-	alert(lon);
 }
 
 function onLocationFound(e) {
