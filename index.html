@@ -108,15 +108,15 @@
           <ul class="nav navbar-nav">
 			<li onclick="alldata()" class="active"><a href="#">Map</a></li>
 			<!--<li onclick="Observation()"><a href="#">Add room(s)</a></li>-->
-			<li onclick="alldata()"><a href="#">Show all</a></li>
-			<li onclick="InvokeMarker()"><a href="#">Add Accomodation</a></li>
-            <li onclick="Query()"><a href="#">Search Accommodation</a></li>
-			<li onclick="Querylocation()"><a href="#">Filter by location</a></li>
+			<li onclick="InvokeMarker()"><a href="#">Add room(s)</a></li>
+            <li onclick="Query()"><a href="#">Search For Accommodation</a></li>
+			<li onclick="mylocation();Querylocation();"><a href="#">ShowDistance</a></li>
+			<li onclick="QuerylocationEnd();"><a href="#">HideDistance</a></li>
 			<li onclick="mylocation()"><a href="#">Get my location</a></li>
 			<!--<li onclick="InvokeMarker()"><a href="#">New Accommodation</a></li>-->
 			
-			<li><a href="#">Further links</a></li>
-			<li onclick="startButton(event)"><a href="#">Start Speech Control</a></li>
+			<li onclick="LinksShow()"><a href="#">Further links</a></li>
+			<li onclick="startButton(event)"><a href="#">SpeechControl</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -137,81 +137,81 @@
  <!-- Observation sidebar -->
 
  <div id="observation_sidebar"> 
-	<br> <b><font style="color: #3366ff;" size=4px>Enter room details:  </b></font>
-	<br><br>
+	<br> <b><font size=4px>Enter room details:  </b></font>
+	<br>
 	
 	<div style="padding-top:10px">
-	<b><font style="color: #3366ff;" size=3px> Location details (auto-generated):<b></font>
-	</div><!--
+	<b><font size=3px> Location details (auto-generated):<b></font>
+	</div>
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>-->
+	</div>
 	<div style="padding-top:10px">
-			<font style="color: #3366ff;">Latitude :</font> &nbsp <input type="text" style="width: 70px" id="obsLatitude" name="obsLatitude">&nbsp&nbsp&nbsp&nbsp
-			<font style="color: #3366ff;">Longitude :</font> &nbsp <input type="text" style="width: 70px" id="obsLongitude" name="obsLongitude"><br>
+			Latitude : &nbsp <input type="text" style="width: 70px" id="obsLatitude" name="obsLatitude">&nbsp&nbsp&nbsp&nbsp
+			Longitude : &nbsp <input type="text" style="width: 70px" id="obsLongitude" name="obsLongitude"><br>
 	</div>
 
 	<div style="padding-top:15px">
-	<b><font style="color: #3366ff;" size=3px> Address Details</b></font>
-	</div><!--
+	<b><font size=3px> Address Details</b></font>
+	</div>
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>-->
+	</div>
 	<div style="padding-top:10px">
-		<font style="color: #3366ff;">Street :</font>&nbsp <input type="text" style="width: 70px" id="obsStreet" name="obsStreet">&nbsp&nbsp&nbsp&nbsp
-		<font style="color: #3366ff;">Zip :</font>&nbsp;<input type="text" style="width: 70px" id="obsZip" name="obsZip"><br><br>
-		<font style="color: #3366ff;">City :</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" style="width: 70px" id="obsCity" name="obsCity">
-		<font style="color: #3366ff;">Area :</font>&nbsp <input type="text" style="width: 70px" id="obsArea" name="obsArea"><br>
+		Street :&nbsp <input type="text" style="width: 70px" id="obsStreet" name="obsStreet">&nbsp&nbsp&nbsp&nbsp
+		Zip :&nbsp;<input type="text" style="width: 70px" id="obsZip" name="obsZip"><br><br>
+		City :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" style="width: 70px" id="obsCity" name="obsCity">
+		Area :&nbsp <input type="text" style="width: 70px" id="obsArea" name="obsArea"><br>
 	</div>
 	<div style="padding-top:15px">
-		<b><font style="color: #3366ff;" size=3px> Rent in &#8364;</b></font>
-	</div><!--
+		<b><font size=3px> Rent in &#8364;</b></font>
+	</div>
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>-->
+	</div>
 	<div style="padding-top:10px">
 		&nbsp <input type="text" style="width: 70px" id="obsRent" name="obsRent"><br>
 	</div>
 	
 	<div style="padding-top:15px">
-	<b><font style="color: #3366ff;" size=3px>Type</b></font>
-	</div><!--
+	<b><font size=3px>Type</b></font>
+	</div>
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>-->
+	</div>
 	<div style="padding-top:10px">
-		<input type="radio" id="obsTypeFlat" name="obsType" value="Flat">&nbsp;<font style="color: #3366ff;">Flat</font> &nbsp;&nbsp;
-		<input type="radio" id="obsTypeWG" name="obsType" value="WG">&nbsp;<font style="color: #3366ff;">WG</font>
+		<input type="radio" id="obsTypeFlat" name="obsType" value="Flat">&nbsp;Flat &nbsp;&nbsp;
+		<input type="radio" id="obsTypeWG" name="obsType" value="WG">&nbsp;WG
 	</div>
 	
 	<div style="padding-top:15px">
-	<b><font style="color: #3366ff;" size=3px>Number of fellow lodger</b></font>
-	</div><!--
+	<b><font size=3px>Number of fellow lodger</b></font>
+	</div>
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>-->
+	</div>
 	<div style="padding-top:10px">
 		<input type="text" style="width: 70px" id="obsFellowLodger" name="obsFellowLodger">		
 	</div>
 
 	<div style="padding-top:15px">
-	<b><font style="color: #3366ff;" size=3px>Number of rooms</b></font>
-	</div><!--
+	<b><font size=3px>Number of rooms</b></font>
+	</div>
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>-->
+	</div>
 	<div style="padding-top:10px">
 		 &nbsp <input type="text" style="width: 70px" id="obsNoOfRoom" name="obsNoOfRoom">		 
 	</div>
 	
 	<div style="padding-top:15px">
-		<b><font style="color: #3366ff;" style="color: #3366ff;" size=3px>Move-in date</b></font>
-		</div><!--
+		<b><font size=3px>Move-in date</b></font>
+		</div>
 		<div style="border: thin solid #000000; border-bottom-width: 0px;">
-		</div>-->
+		</div>
 		<div style="padding-top:10px">
-		 &nbsp <input type="text" style="width: 70px" id="obsDate" name="obsDate"><font style="color: #3366ff;" size=2> &nbsp;(YYYY-MM-DD)</b></font>		 
+		 &nbsp <input type="text" style="width: 70px" id="obsDate" name="obsDate"><font size=2> &nbsp;(YYYY-MM-DD)</b></font>		 
 	</div>
 	
 	<div style="padding-top:15px">
-	<b><font style="color: #3366ff;" size=3px>Other information</b></font>
-	</div><!--
+	<b><font size=3px>Other information</b></font>
+	</div>
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>-->
+	</div>
 	<div style="padding-top:10px">
 		 <textarea style="width: 250px" rows="4" cols="30" id="obsInformation" name="obsInformation"></textarea>
 	</div>
@@ -233,9 +233,36 @@
 
 
 
+
+
+
+
+
+ <div id="sidebarLinks"> 
+
+<h>Here are some useful further links to get a room.</h>
+<br>
+<p>
+<a href="http://www.wg-gesucht.de">wg-gesucht</a><br> This is a link to a page on wg-gesucht.
+</p>
+<p >
+<a href="http://www.studierzimmer-muenster.de/">studierzimmer-muenster</a><br> This is a link to a website on the studierzimmer-muenster.
+</p>
+<p>
+<a href="http://www.muenster.de/stadt/wohnungsamt/tipps_liste.html">stadtwerk-muenster</a><br> This is a link to a website on the stadtwerk-muenster.
+</p>
 </div>
- </div>
-</form>
+
+
+
+
+
+
+
+
+
+
+
 <!-- QUERY FORMULAR-->
  <div id="sidebar"> 
 	<p>
@@ -419,14 +446,14 @@
  <table border="0" cellpadding="0" cellspacing="4">
     <tr>
       <td align="right">Distance [km]</td>
-      <td><input id="inputDistance" name="vorname" type="text" size="30" maxlength="30"></td>
+      <td><input id="inputDistance"  type="text" size="30" maxlength="30"></td>
     </tr>    
   </table>
 </form>
 </div>
 <script>
 
-
+mylocation();
 
 //Speech
    function startButton(event) {
@@ -451,6 +478,10 @@ var map = new L.Map('map', {
 
 //sidebar
 var sidebar = L.control.sidebar('sidebar', {
+    position: 'right'
+});
+
+var sidebarLinks = L.control.sidebar('sidebarLinks', {
     position: 'right'
 });
 
@@ -493,7 +524,7 @@ map.addControl(sidebarqlocation);
 map.addControl(AddAccomodationsidebar);
 map.addControl(insertObservationSidebar);
 map.addControl(obs_sidebar);
-
+map.addControl(sidebarLinks);
 function ShowSidebar()
 {
 sidebar.show();
@@ -586,25 +617,29 @@ function queryattributes(){
 	geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
 	}
 	
-	if (qflats == 1){
-	geoJsonquery +="<PropertyIsEqualTo><PropertyName>type</PropertyName><Literal>Flat</Literal></PropertyIsEqualTo>"
-	}
+	//if (qflats == 1){
+	//geoJsonquery +="<PropertyIsEqualTo><PropertyName>price</PropertyName><Literal>"
+	//geoJsonquery +=qpricemax
+	//geoJsonquery +="</Literal></PropertyIsEqualTo>"
+	//}
 	
-	if (qfsc == 1){
-	geoJsonquery +="<PropertyIsEqualTo><PropertyName>type</PropertyName><Literal>WG</Literal></PropertyIsEqualTo>"
-	}
+	//if (qfsc == 1){
+	//geoJsonquery +="<PropertyIsEqualTo><PropertyName>price</PropertyName><Literal>"
+	//geoJsonquery +=qpricemax
+	//geoJsonquery +="</Literal></PropertyIsEqualTo>"
+	//}
 	
-	if (qmaxlodger != ''){
-	geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>fellowlodger</PropertyName><Literal>"
-	geoJsonquery +=qmaxlodger
-	geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
-	}
+	//if (qmaxlodger != ''){
+	//geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>price</PropertyName><Literal>"
+	//geoJsonquery +=qpricemax
+	//geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
+	//}
 	
-	if (qminlodger != ''){
-	geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>fellowlodger</PropertyName><Literal>"
-	geoJsonquery +=qminlodger
-	geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
-	}
+	//if (qminlodger != ''){
+	//geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>price</PropertyName><Literal>"
+	//geoJsonquery +=qpricemax
+	//geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
+	//}
 	
 	if(qminroom != ''){
 	geoJsonquery +="<PropertyIsGreaterThanOrEqualTo><PropertyName>rooms</PropertyName><Literal>"
@@ -626,6 +661,7 @@ function queryattributes(){
 	
 	geoJsonquery +="</And></Filter>&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
 	
+	alert(geoJsonUrl);
 	
 	$.ajax({ 
         url: geoJsonquery, 
@@ -661,39 +697,49 @@ function queryclear(){
 
 function Querylocation(location){
 	sidebarqlocation.show();
+	
+	
 
-	var max=navigator.geolocation.getCurrentPosition();
-	alert(max);
-	
-	
+
  var distance = 1;
   $("#inputDistance").val(distance);
- var latLong=[51.9544017, 7.6213766];
+ var latLong=[ lat,lon];
  
 
+
+
+
+var currentPositionMarker = L.marker([lat, lon], 
+            {icon: L.AwesomeMarkers.icon({icon: 'spinner', prefix: 'fa', markerColor: 'red', spin:true})});
+  currentPositionMarker.addTo(map);
   
  
   
  
-  var currentDiameter = L.circle(latLong, distance * 1000);
+  currentDiameter = L.circle(latLong, distance * 1000);
   currentDiameter.addTo(map);
  
-  var currentPositionMarker = L.marker([latLong[0], latLong[1]]);
-  currentPositionMarker.addTo(map);
+
 
   $("#inputDistance").change(function() {	
     map.removeLayer(currentDiameter);
     currentDiameter = L.circle(currentPositionMarker.getLatLng(), $("#inputDistance").val() * 1000);
     currentDiameter.addTo(map);
+
   });
 
 	
 }
 
+function QuerylocationEnd(){
+	
+	sidebarqlocation.hide();
+map.removeLayer(currentDiameter);
 
 
 
-
+	
+}
 
 
 
@@ -721,6 +767,7 @@ geoJsonUrl +=lon
 geoJsonUrl +="</gml:coordinates></gml:Point><Distance units='km'>3</Distance></DWithin></Filter>"
 geoJsonUrl +="&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";*/
 
+alert(geoJsonUrl)
 
 $.ajax({ 
         url: geoJsonUrl, 
@@ -734,6 +781,13 @@ $.ajax({
 }
 
 map.on('locationerror', onLocationError);
+
+function LinksShow()
+{
+sidebarLinks.show();
+}
+
+
 
 
 // Add a marker
@@ -1127,18 +1181,7 @@ navigator.geolocation.getCurrentPosition(GetLocation)
 function GetLocation(location){
 lat=location.coords.latitude;
 lon=location.coords.longitude;
-accuracy = location.coords.accuracy;
 
-AddMarker(lat, lon, accuracy);
-
-	
-}
-
-function AddMarker(latitude, longitude, accuracy)	{
-	var radius = accuracy / 2;
-	
-    L.marker([latitude, longitude],{icon: L.AwesomeMarkers.icon({icon: 'spinner', prefix: 'fa', markerColor: 'blue', spin:true}) }).addTo(map);
-    L.circle([latitude, longitude], radius).addTo(map);
 }
 
 function onLocationFound(e) {
