@@ -1188,7 +1188,7 @@ AddMarker(lat, lon, accuracy);
 }
 
 function AddMarker(latitude, longitude, accuracy)	{
-	var radius = accuracy / 2;
+	var radius = accuracy / 4;
 	
     L.marker([latitude, longitude],{icon: L.AwesomeMarkers.icon({icon: 'spinner', prefix: 'fa', markerColor: 'blue', spin:true}) }).addTo(map);
     L.circle([latitude, longitude], radius).addTo(map);
