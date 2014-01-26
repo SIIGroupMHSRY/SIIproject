@@ -399,7 +399,10 @@
 <script>
 
 //create map
-var map = L.map('map').setView([51.9604,7.6197], 14);
+var map = new L.Map('map', {
+            //crs: L.CRS.EPSG3857,
+            center: [51.95442, 7.62709],
+            zoom: 14});
 
 //sidebar
 var sidebar = L.control.sidebar('sidebar', {
@@ -422,6 +425,17 @@ var AddAccomodationsidebar = L.control.sidebar('AddAccomodationsidebar', {
 });
 
 var insertObservationSidebar = L.control.sidebar('InsertObservationSidebar', {position: 'right'});
+
+
+
+
+
+
+
+
+
+
+
 
 //observation sidebar
 var obs_sidebar = L.control.sidebar('observation_sidebar', {
@@ -897,6 +911,36 @@ var layerOrtho = L.tileLayer.wms('http://www.wms.nrw.de/geobasis/wms_nw_dop40', 
 	version:'1.3.0',
     attribution: '| &copy Geobasis NRW 2013'
 });
+
+// Noisemap
+
+ var laerm_night = new L.TileLayer.WMS("https://www.wms.nrw.de/umwelt/laerm", {
+            layers: 'STR_NGT',
+            format: 'image/png',
+            crs: L.CRS.EPSG4326,
+            version: '1.3.0',
+            transparent: true,
+            opacity: 0.5
+        });
+
+var laerm_24 = new L.TileLayer.WMS("https://www.wms.nrw.de/umwelt/laerm", {
+            layers: 'STR_DEN',
+            format: 'image/png',
+            crs: L.CRS.EPSG4326,
+            version: '1.3.0',
+            transparent: true,
+            opacity: 0.5
+        });
+		
+var leisure = new L.TileLayer.WMS("http://www.wms.nrw.de/geobasis/wms_nw_fzk", {
+            layers: 'nw_fzk',
+            format: 'image/png',
+            //crs: L.CRS.EPSG4326,
+            version: '1.1.1',
+            transparent: true,
+            opacity: 0.5
+        });
+		
 //The map which is visualized when you get on the website.
 layerOSM.addTo(map);
 
@@ -908,8 +952,18 @@ var baseMaps={ "OSM": layerOSM,
 var overlapMaps={"OSM":layerOSMtransparent,
                   "DVG":layerDVG,
 				  "DTK10_pan":layerDTK10_pan,
-				  "DGK5":layerDGK5};
+				  "DGK5":layerDGK5,
+				  "NoiseStreet_Night":laerm_night,
+                  "NoiseStreet_24h":laerm_24,
+				  "Leisure_cadastre":leisure
+				  };
+
 var control=L.control.layers(baseMaps,overlapMaps,{position:'bottomleft'}).addTo(map);
+
+
+
+
+
 
 //miniMap
 	var osm2 = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 13, attribution: osmAttrib });
