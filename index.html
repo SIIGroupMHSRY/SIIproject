@@ -25,7 +25,8 @@
 <!-- created style sheets and scripts-->
 <link href="libraries/bootstrap/css/bootstrap.css" rel="stylesheet">
 <script type="text/javascript" src="libraries/L.Control.Sidebar.js"></script>
-<link rel="stylesheet" href="libraries/custom_css.css"/>
+<script type="text/javascript" src="libraries/custom.js"></script>
+<!--<link rel="stylesheet" href="libraries/custom_css.css"/>-->
 
 
 <!-- awesome markers-->
@@ -408,9 +409,20 @@
 	</div> 
 
 <div id="sidebarqlocation"> 
-<button type="button" onclick="submitquerylocation()">Submit</button>
-</div>
 
+
+
+<p>
+			<span style="color: #3366ff;"><strong><span style="font-size: medium;">Add a distance for your area of interest</span></strong></span><img alt="" src="libraries/Images/Search3.png" style="width: 100px; height: 100px" /></p>
+<form>
+ <table border="0" cellpadding="0" cellspacing="4">
+    <tr>
+      <td align="right">Distance [km]</td>
+      <td><input id="inputDistance" name="vorname" type="text" size="30" maxlength="30"></td>
+    </tr>    
+  </table>
+</form>
+</div>
 <script>
 
 
@@ -651,19 +663,67 @@ function queryclear(){
 	initialvariables()
 }
 
-function Querylocation(){
-	sidebarqlocation.show();	
+function Querylocation(location){
+	sidebarqlocation.show();
+
+	var max=navigator.geolocation.getCurrentPosition();
+	alert(max);
+	
+	
+ var distance = 1;
+  $("#inputDistance").val(distance);
+ var latLong=[51.9544017, 7.6213766];
+ 
+
+  
+ 
+  
+ 
+  var currentDiameter = L.circle(latLong, distance * 1000);
+  currentDiameter.addTo(map);
+ 
+  var currentPositionMarker = L.marker([latLong[0], latLong[1]]);
+  currentPositionMarker.addTo(map);
+
+  $("#inputDistance").change(function() {	
+    map.removeLayer(currentDiameter);
+    currentDiameter = L.circle(currentPositionMarker.getLatLng(), $("#inputDistance").val() * 1000);
+    currentDiameter.addTo(map);
+  });
+
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 function submitquerylocation(){
 		
-var geoJsonUrl ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&"
+var geoJsonUrl ="http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS?request=GetFeature&version=1.0.0&service=wfs&outputformat=json&cql_filter=DWITHIN(the_geom,POINT(51.9544017,7.6213766),1,kilometers,4326)&typeName=group10ws:flats&&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
+
+
+
+
+
+
+
+/*
+"http://giv-siidemo.uni-muenster.de:8080/geoserver/group10ws/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=group10ws:flats&"
 geoJsonUrl +="Filter=<Filter xmlns=\"http://www.opengis.net/ogc\"  xmlns:gml=\"http://www.opengis.net/gml\"><DWithin><PropertyName>the_geom</PropertyName><gml:Point><gml:coordinates>"
 geoJsonUrl +=lat
 geoJsonUrl +=","
 geoJsonUrl +=lon
 geoJsonUrl +="</gml:coordinates></gml:Point><Distance units='km'>3</Distance></DWithin></Filter>"
-geoJsonUrl +="&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
+geoJsonUrl +="&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";*/
 
 alert(geoJsonUrl)
 
@@ -1096,190 +1156,9 @@ function onLocationError(e) {
     alert(e.message);
 }
 
-var centerPoint = new L.LatLng(51.95442, 7.62709);
-
-//-------------------------
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////Voice Recognition Part//////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-var recognition = new webkitSpeechRecognition();
-var recognizing = false;
-var final_transcript = '';
-var interim_transcript = '';
-
-recognition.lang = "en-BE";
-recognition.continuous = true; // keep processing input until stopped
-recognition.interimResults = true; // show interim results
-//recognition.lang = $("#select_language").val(); // specify the language
-//console.log("Dialect =" + recognition.lang);
-recognition.onresult = function (event) {
-    // Assemble the transcript from the array of results
-    //recognition.lang = $("#select_language").val(); // specify the language from drop down box
-	console.log("Dialect =" + recognition.lang);
-	for (var i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-            final_transcript = event.results[i][0].transcript;
-        } else {
-            interim_transcript = event.results[i][0].transcript;
-        }
-    }
-
-    console.log("interim: " + interim_transcript);
-    console.log("final: " + final_transcript);
-
-    // update the web page
-    if (final_transcript.length > 0) {
-        $('#transcript').html(final_transcript);
-        $('#transcript1').html(final_transcript);
-    }
-
-    if (interim_transcript.length > 0) {
-        $('#interim').html(interim_transcript);
-        $('#interim1').html(interim_transcript);
-    }
 
 
-    if (interim_transcript.length > 0) {
-        console.log("Active element:" + document.activeElement.id)
-        switch (document.activeElement.id) {
-
-        case "pointname":
-            var content = $("#pointname").val();
-            $("#pointname").val(capitalize(content.replace(final_transcript, "") + final_transcript));
-            final_transcript = "";
-            break;
-
-        case "pointdes":
-            var content = $("#pointdes").val();
-            $("#pointdes").val(capitalize(content.replace(final_transcript, "") + final_transcript));
-            final_transcript = "";
-            break;
-
-        case "linename":
-            var content = $("#linename").val();
-            $("#linename").val(capitalize(content.replace(final_transcript, "") + final_transcript));
-            final_transcript = "";
-            break;
-
-        case "linedes":
-            var content = $("#linedes").val();
-            $("#linedes").val(capitalize(content.replace(final_transcript, "") + final_transcript));
-            final_transcript = "";
-            break;
-
-        case "citizenname":
-            var content = $("#citizenname").val();
-            $("#citizenname").val(capitalize(content.replace(final_transcript, "") + final_transcript));
-            final_transcript = "";
-            break;
-
-        case "usercomment":
-            var content = $("#usercomment").val();
-            $("#usercomment").val(capitalize(content.replace(final_transcript, "") + final_transcript));
-            final_transcript = "";
-            break;
-        }
-    }
-
-    // no speech commands from the input fields should not trigger map actions
-    if (document.activeElement.id != ("usercomment"||"citizenname"||"linedes"||"linename"||"pointdes"||"pointname")) {
-
-    // handling commands
-
-    //////////////////////////////////////////////////////////
-    /////Start using navigation controls//////////////////////
-    //////////////////////////////////////////////////////////
-    if (final_transcript.indexOf("zoom in") >= 0) {
-       /* $("#command_animation").html("zoom in").css({
-            'fontSize': '12pt'
-        }).animate({
-                fontSize: '13em'
-            }, 1100,
-            function () {
-                $("#command_animation").html("");
-            });*/
-        map.zoomIn(1);
-        console.log("Zoomed in");
-        final_transcript = '';
-    }
-
-    if (final_transcript.indexOf("zoom out") >= 0) {
-     /*   $("#command_animation").html("zoom out").css('fontSize', '13em').animate({
-                fontSize: '12pt'
-            }, 1100,
-            function () {
-                $("#command_animation").html("");
-            });*/
-        map.zoomOut(1);
-        console.log("Zoomed out");
-        final_transcript = '';
-    }
-
-    if (final_transcript.indexOf("left") >= 0) {
-        centerPoint = map.getCenter();
-        var m = (map.getBounds().getEast() - map.getBounds().getWest()) / 4;
-        centerPoint.lng -= Math.abs(m);
-      /*  $("#").html("left ").css('fontSize', '13em').animate({
-                'left': '-500px'
-            }, 1100,
-            function () {
-                $("#command_animation").html("").css('left', '45%');
-            });*/
-        map.panTo(centerPoint);
-        console.log("Panned Left by " + Math.abs(m));
-        final_transcript = '';
-    }
-
-    if (final_transcript.indexOf("right") >= 0) {
-        centerPoint = map.getCenter();
-        var m = (map.getBounds().getEast() - map.getBounds().getWest()) / 4;
-        centerPoint.lng += Math.abs(m);
-       /* $("#command_animation").html("right").css({
-            'fontSize': '13em'
-        }).animate({
-                'left': '100%'
-            }, 1100,
-            function () {
-                $("#command_animation").html("").css('left', '45%');
-            });*/
-        map.panTo(centerPoint);
-        console.log("Panned right by " + Math.abs(m));
-        final_transcript = '';
-    }
-
-    if (final_transcript.indexOf("up") >= 0) {
-        centerPoint = map.getCenter();
-        var m = (map.getBounds().getNorth() - map.getBounds().getSouth()) / 4;
-        centerPoint.lat += m;
-       /* $("#command_animation").html("up").css('fontSize', '13em').animate({
-                'top': '-250px'
-            }, 1100,
-            function () {
-                $("#command_animation").html("").css('top', '50%');
-            });*/
-        map.panTo(centerPoint);
-        console.log("Panned up by " + Math.abs(m));
-        final_transcript = '';
-    }
-
-    if (final_transcript.indexOf("down") >= 0) {
-        centerPoint = map.getCenter();
-        var m = (map.getBounds().getNorth() - map.getBounds().getSouth()) / 4;
-        centerPoint.lat -= m;
-       /* $("#command_animation").html("down").css('fontSize', '13em').animate({
-                'top': '500px'
-            }, 1100,
-            function () {
-                $("#command_animation").html("").css('top', '50%');
-            });*/
-        map.panTo(centerPoint);
-        console.log("Panned down by " + Math.abs(m));
-        final_transcript = '';
-    }
-   }
-}
-
-
+ 
 
 
 
