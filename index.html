@@ -275,11 +275,11 @@
 							<strong>
 							<span style="color: #3366ff; ">size in m</span><span style="color: #3366ff; font-size: small;"><sup>2</sup></span></strong></td>
 						<td>
-							<strong>Min</strong></td>
+							<strong><font style="color: #3366ff;">Min</font></strong></td>
 						<td>
 							&nbsp;<input id="qsizemin" type="text" /></td>
 						<td>
-							<strong>Max</strong></td>
+							<strong><font style="color: #3366ff;">Max</font></strong></td>
 						<td>
 							<input id="qsizemax" type="text" /></td>
 					</tr>
@@ -291,11 +291,11 @@
 						<td style="text-align: left;">
 							<span style="color: #3366ff; "><strong>price in &euro;</strong></span></td>
 						<td>
-							&nbsp;<strong>Min</strong></td>
+							&nbsp;<strong><font style="color: #3366ff;">Min</font></strong></td>
 						<td>
 							&nbsp;<input id="qpricemin" type="text" /></td>
 						<td>
-							&nbsp;<strong>Max</strong></td>
+							&nbsp;<strong><font style="color: #3366ff;">Max</font></strong></td>
 						<td>
 							<input id="qpricemax" type="text" /></td>
 					</tr>
@@ -309,9 +309,9 @@
 						<td>
 							&nbsp;</td>
 						<td>
-							&nbsp;<strong><input id="qflat" name="rdFlat" type="radio" />Flat</strong></td>
+							&nbsp;<strong><input id="qflat" name="rdFlat" type="radio" /><font style="color: #3366ff;">Flat</font></strong></td>
 						<td colspan="2">
-							&nbsp;<input id="qfsc" name="rdFlat" type="radio" /><strong>&nbsp;WG</strong></td>
+							&nbsp;<input id="qfsc" name="rdFlat" type="radio" /><strong>&nbsp;<font style="color: #3366ff;">WG</font></strong></td>
 					</tr>
 					<tr>
 						<td style="text-align: left;" colspan="5">
@@ -321,11 +321,11 @@
 						<td style="text-align: left;">
 							<span style="color: #3366ff; "><strong>Number of fellow lodger</strong></span></td>
 						<td>
-							<strong>Min</strong></td>
+							<strong><font style="color: #3366ff;">Min</font></strong></td>
 						<td>
 							&nbsp;<input id="qminlodger" type="text" /></td>
 						<td>
-							&nbsp;<strong>Max</strong></td>
+							&nbsp;<strong><font style="color: #3366ff;">Max</font></strong></td>
 						<td>
 							<input id="qmaxlodger" type="text" /></td>
 					</tr>
@@ -337,11 +337,11 @@
 						<td style="text-align: left;">
 							<span style="color: #3366ff; "><strong>Number of Rooms</strong></span></td>
 						<td>
-							&nbsp;<strong>Min</strong></td>
+							&nbsp;<strong><font style="color: #3366ff;">Min</font></strong></td>
 						<td>
 							<input id="qminroom" type="text" /></td>
 						<td>
-							&nbsp;<strong>Max</strong></td>
+							&nbsp;<strong><font style="color: #3366ff;">Max</font></strong></td>
 						<td>
 							&nbsp;<input id="qmaxroom" type="text" /></td>
 					</tr>
@@ -583,10 +583,12 @@ function queryattributes(){
 	qsizemax=document.getElementById('qsizemax').value;
 	qpricemin=document.getElementById('qpricemin').value;
 	qpricemax=document.getElementById('qpricemax').value;
+	
 	if (document.getElementById('qflat').checked==true)
 		qflats=1;
-	if (document.getElementById('qfsc').checked==true)
+	else if (document.getElementById('qfsc').checked==true)
 		gfsc=1;
+	
 	qmaxlodger=document.getElementById('qmaxlodger').value;
 	qminlodger=document.getElementById('qminlodger').value;
 	qmaxroom=document.getElementById('qmaxroom').value;
@@ -618,17 +620,19 @@ function queryattributes(){
 	geoJsonquery +="</Literal></PropertyIsLessThanOrEqualTo>"
 	}
 	
-	//if (qflats == 1){
-	//geoJsonquery +="<PropertyIsEqualTo><PropertyName>price</PropertyName><Literal>"
-	//geoJsonquery +=qpricemax
-	//geoJsonquery +="</Literal></PropertyIsEqualTo>"
-	//}
 	
-	//if (qfsc == 1){
-	//geoJsonquery +="<PropertyIsEqualTo><PropertyName>price</PropertyName><Literal>"
-	//geoJsonquery +=qpricemax
-	//geoJsonquery +="</Literal></PropertyIsEqualTo>"
-	//}
+	if(document.getElementById("qflat").checked)	{
+	geoJsonquery +="<PropertyIsEqualTo><PropertyName>type</PropertyName><Literal>"
+	geoJsonquery += "Flat";
+	geoJsonquery +="</Literal></PropertyIsEqualTo>"
+	}
+	
+	
+	if(document.getElementById("qfsc").checked)	{
+	geoJsonquery +="<PropertyIsEqualTo><PropertyName>type</PropertyName><Literal>"
+	geoJsonquery += "WG";
+	geoJsonquery +="</Literal></PropertyIsEqualTo>"
+	}
 	
 	//if (qmaxlodger != ''){
 	//geoJsonquery +="<PropertyIsLessThanOrEqualTo><PropertyName>price</PropertyName><Literal>"
@@ -662,7 +666,8 @@ function queryattributes(){
 	
 	geoJsonquery +="</And></Filter>&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
 	
-	//alert(geoJsonUrl);
+	//alert(document.getElementById("qfsc").checked);
+	//alert(geoJsonquery);
 	
 	$.ajax({ 
         url: geoJsonquery, 
