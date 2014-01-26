@@ -209,9 +209,9 @@
 	
 	<div style="padding-top:15px">
 	<b><font style="color: #3366ff;" size=3px>Other information</b></font>
-	</div>
+	</div><!--
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
+	</div>-->
 	<div style="padding-top:10px">
 		 <textarea style="width: 250px" rows="4" cols="30" id="obsInformation" name="obsInformation"></textarea>
 	</div>
@@ -1181,7 +1181,17 @@ navigator.geolocation.getCurrentPosition(GetLocation)
 function GetLocation(location){
 lat=location.coords.latitude;
 lon=location.coords.longitude;
+accuracy = location.coords.accuracy;
 
+AddMarker(lat, lon, accuracy);
+
+}
+
+function AddMarker(latitude, longitude, accuracy)	{
+	var radius = accuracy / 2;
+	
+    L.marker([latitude, longitude],{icon: L.AwesomeMarkers.icon({icon: 'spinner', prefix: 'fa', markerColor: 'blue', spin:true}) }).addTo(map);
+    L.circle([latitude, longitude], radius).addTo(map);
 }
 
 function onLocationFound(e) {
