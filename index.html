@@ -363,7 +363,7 @@
 			</table>
 		</div>
 		<p>
-			<button onclick="queryclear()" type="button">Clear</button><button onclick="queryattributes()" type="button">Submit</button><br />
+			<button onclick="queryclear()" type="button">Clear</button>&nbsp;&nbsp;	<button onclick="queryattributes()" type="button">Submit</button><br />
 			</p>
 </div>
 
@@ -662,7 +662,7 @@ function queryattributes(){
 	
 	geoJsonquery +="</And></Filter>&format=text/javascript&outputFormat=json&format_options=callback:loadGeoJsonQuery";
 	
-	alert(geoJsonUrl);
+	//alert(geoJsonUrl);
 	
 	$.ajax({ 
         url: geoJsonquery, 
