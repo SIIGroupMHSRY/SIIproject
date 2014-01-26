@@ -108,8 +108,8 @@
           <ul class="nav navbar-nav">
 			<li onclick="alldata()" class="active"><a href="#">Map</a></li>
 			<!--<li onclick="Observation()"><a href="#">Add room(s)</a></li>-->
-			<li onclick="InvokeMarker()"><a href="#">Add room(s)</a></li>
-            <li onclick="Query()"><a href="#">Search For Accommodation</a></li>
+			<li onclick="InvokeMarker()"><a href="#">Add Accomodation</a></li>
+            <li onclick="Query()"><a href="#">Search Accommodation</a></li>
 			<li onclick="mylocation();Querylocation();"><a href="#">ShowDistance</a></li>
 			<li onclick="QuerylocationEnd();"><a href="#">HideDistance</a></li>
 			<li onclick="mylocation()"><a href="#">Get my location</a></li>
@@ -137,78 +137,78 @@
  <!-- Observation sidebar -->
 
  <div id="observation_sidebar"> 
-	<br> <b><font size=4px>Enter room details:  </b></font>
-	<br>
+	<br> <b><font style="color: #3366ff;" size=4px>Enter details:  </b></font>
+	<br><br>
 	
 	<div style="padding-top:10px">
-	<b><font size=3px> Location details (auto-generated):<b></font>
-	</div>
+	<b><font style="color: #3366ff;" size=3px> Location details (auto-generated):<b></font>
+	</div><!--
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
+	</div>-->
 	<div style="padding-top:10px">
-			Latitude : &nbsp <input type="text" style="width: 70px" id="obsLatitude" name="obsLatitude">&nbsp&nbsp&nbsp&nbsp
-			Longitude : &nbsp <input type="text" style="width: 70px" id="obsLongitude" name="obsLongitude"><br>
+			<font style="color: #3366ff;">Latitude :</font> &nbsp <input type="text" style="width: 70px" id="obsLatitude" name="obsLatitude">&nbsp&nbsp&nbsp&nbsp
+			<font style="color: #3366ff;">Longitude :</font> &nbsp <input type="text" style="width: 70px" id="obsLongitude" name="obsLongitude"><br>
 	</div>
 
 	<div style="padding-top:15px">
-	<b><font size=3px> Address Details</b></font>
-	</div>
+	<b><font style="color: #3366ff;" size=3px> Address Details</b></font>
+	</div><!--
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
+	</div>-->
 	<div style="padding-top:10px">
-		Street :&nbsp <input type="text" style="width: 70px" id="obsStreet" name="obsStreet">&nbsp&nbsp&nbsp&nbsp
-		Zip :&nbsp;<input type="text" style="width: 70px" id="obsZip" name="obsZip"><br><br>
-		City :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" style="width: 70px" id="obsCity" name="obsCity">
-		Area :&nbsp <input type="text" style="width: 70px" id="obsArea" name="obsArea"><br>
+		<font style="color: #3366ff;">Street :</font>&nbsp <input type="text" style="width: 70px" id="obsStreet" name="obsStreet">&nbsp&nbsp&nbsp&nbsp
+		<font style="color: #3366ff;">Zip :</font>&nbsp;<input type="text" style="width: 70px" id="obsZip" name="obsZip"><br><br>
+		<font style="color: #3366ff;">City :</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" style="width: 70px" id="obsCity" name="obsCity">
+		 <font style="color: #3366ff;">Area :</font>&nbsp <input type="text" style="width: 70px" id="obsArea" name="obsArea"><br>
 	</div>
 	<div style="padding-top:15px">
-		<b><font size=3px> Rent in &#8364;</b></font>
-	</div>
+		<b><font style="color: #3366ff;" size=3px> Rent in &#8364;</b></font>
+	</div><!--
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
+	</div>-->
 	<div style="padding-top:10px">
 		&nbsp <input type="text" style="width: 70px" id="obsRent" name="obsRent"><br>
 	</div>
 	
 	<div style="padding-top:15px">
-	<b><font size=3px>Type</b></font>
-	</div>
+	<b><font style="color: #3366ff;" size=3px>Type</b></font>
+	</div><!--
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
+	</div>-->
 	<div style="padding-top:10px">
-		<input type="radio" id="obsTypeFlat" name="obsType" value="Flat">&nbsp;Flat &nbsp;&nbsp;
-		<input type="radio" id="obsTypeWG" name="obsType" value="WG">&nbsp;WG
+		<input type="radio" id="obsTypeFlat" name="obsType" value="Flat">&nbsp;<font  style="color: #3366ff;">Flat</font> &nbsp;&nbsp;
+		<input type="radio" id="obsTypeWG" name="obsType" value="WG">&nbsp; <font style="color: #3366ff;">WG</font>
 	</div>
 	
 	<div style="padding-top:15px">
-	<b><font size=3px>Number of fellow lodger</b></font>
-	</div>
+	<b><font style="color: #3366ff;" size=3px>Number of fellow lodger</b></font>
+	</div><!--
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
+	</div>-->
 	<div style="padding-top:10px">
 		<input type="text" style="width: 70px" id="obsFellowLodger" name="obsFellowLodger">		
 	</div>
 
 	<div style="padding-top:15px">
-	<b><font size=3px>Number of rooms</b></font>
-	</div>
+	<b><font style="color: #3366ff;" size=3px>Number of rooms</b></font>
+	</div><!--
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
-	</div>
+	</div>-->
 	<div style="padding-top:10px">
 		 &nbsp <input type="text" style="width: 70px" id="obsNoOfRoom" name="obsNoOfRoom">		 
 	</div>
 	
 	<div style="padding-top:15px">
-		<b><font size=3px>Move-in date</b></font>
-		</div>
+		<b><font style="color: #3366ff;" size=3px>Move-in date</b></font>
+		</div><!--
 		<div style="border: thin solid #000000; border-bottom-width: 0px;">
-		</div>
+		</div>-->
 		<div style="padding-top:10px">
-		 &nbsp <input type="text" style="width: 70px" id="obsDate" name="obsDate"><font size=2> &nbsp;(YYYY-MM-DD)</b></font>		 
+		 &nbsp <input type="text" style="width: 70px" id="obsDate" name="obsDate"><font style="color: #3366ff;" size=2> &nbsp;(YYYY-MM-DD)</b></font>		 
 	</div>
 	
 	<div style="padding-top:15px">
-	<b><font size=3px>Other information</b></font>
+	<b><font style="color: #3366ff;" size=3px>Other information</b></font>
 	</div>
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
 	</div>
