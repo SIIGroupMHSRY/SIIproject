@@ -174,8 +174,8 @@
 	<div style="border: thin solid #000000; border-bottom-width: 0px;">
 	</div>
 	<div style="padding-top:10px">
-		<input type="radio" id="obsType" name="obsType" value="Flat">&nbsp;Flat &nbsp;&nbsp;
-		<input type="radio" id="obsType" name="obsType" value="WG">&nbsp;WG
+		<input type="radio" id="obsTypeFlat" name="obsType" value="Flat">&nbsp;Flat &nbsp;&nbsp;
+		<input type="radio" id="obsTypeWG" name="obsType" value="WG">&nbsp;WG
 	</div>
 	
 	<div style="padding-top:15px">
@@ -215,8 +215,8 @@
 	</div>
 	
 	<br>
+	<button type="button" onclick="clearRoomDetails()">Clear</button>
 	<button type="button" onclick="addRoomDetails()">Submit</button>
-	<button type="button" onclick="clearRoomDetails()">Clear</button>		
 	<br><br>
 </div>
 
@@ -690,18 +690,18 @@ function AddAccomod(Coord){
 }
 
 function InsertObservation(coordinate)	{
-	//insertObservationSidebar.show();	
 	
 	obs_sidebar.show();		
-	var index = coordinate.indexOf(",");	
-	document.getElementById("obsLatitude").value = coordinate.substring(0,index); 
-	document.getElementById("obsLongitude").value = coordinate.substring(index+1);
+	var index = coordinate.indexOf(",");
 	
+	var longitude = coordinate.substring(0,index);
+	var latitude = coordinate.substring(index+1);
 	
-	//$.get( "insert_observation.php?coordinate=" + coordinate, function( data ) {
-		//document.getElementById('coordinateValues').innerHTML = data;
-	//});
-
+	var longi = longitude.split(".");
+	var lati = latitude.split(".");
+	
+	document.getElementById("obsLongitude").value = longi[0] + "." + longi[1].substring(0, 6);  //coordinate.substring(0,index); 
+	document.getElementById("obsLatitude").value = lati[0] + "." + lati[1].substring(0, 6); //coordinate.substring(index+1);
 }
 
 
@@ -737,7 +737,13 @@ function addRoomDetails()	{
 	getUrl += "obsCity=" + document.getElementById("obsCity").value + "&";
 	getUrl += "obsArea=" + document.getElementById("obsArea").value + "&";
 	getUrl += "obsRent=" + document.getElementById("obsRent").value + "&";
-	getUrl += "obsType=" + document.getElementById("obsType").value + "&";
+	//getUrl += "obsType=" + document.getElementById("obsType").value + "&";
+	
+	if(document.getElementById("obsTypeFlat").checked)
+		getUrl += "obsType=Flat&";
+	else if(document.getElementById("obsTypeWG").checked)
+		getUrl += "obsType=WG&";
+	
 	getUrl += "obsFellowLodger=" + document.getElementById("obsFellowLodger").value + "&";
 	getUrl += "obsNoOfRoom=" + document.getElementById("obsNoOfRoom").value + "&";
 	getUrl += "obsDate=" + document.getElementById("obsDate").value + "&";				
@@ -767,6 +773,10 @@ function clearRoomDetails()	{
 	document.getElementById("obsArea").value = '';
 	document.getElementById("obsRent").value = '';
 	//document.getElementById("obsType").value = '';
+	
+	document.getElementById("obsTypeFlat").checked = false;
+	document.getElementById("obsTypeWG").checked = false;
+	
 	document.getElementById("obsFellowLodger").value = '';
 	document.getElementById("obsNoOfRoom").value = '';
 	document.getElementById("obsDate").value = '';
