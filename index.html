@@ -25,6 +25,7 @@
 <!-- created style sheets and scripts-->
 <link href="libraries/bootstrap/css/bootstrap.css" rel="stylesheet">
 <script type="text/javascript" src="libraries/L.Control.Sidebar.js"></script>
+<link rel="stylesheet" href="libraries/custom_css.css"/>
 
 
 <!-- awesome markers-->
@@ -32,7 +33,8 @@
  <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" rel="stylesheet">
   <link rel="stylesheet" href="dist/leaflet.awesome-markers.css">
 
-
+<!-- custom 
+<script type='text/javascript' src="libraries/custom/custom_functions.js"></script>-->
 <style>
 #map { 
             position: absolute;
@@ -75,6 +77,16 @@
             width: 60px;
         }
     </style>
+
+	
+<meta charset="utf-8">
+<title>Find your new living place</title>
+
+
+
+<link rel="shortcut icon" href="libraries/head.png" type="image/x-icon" />
+
+</head>
 <body>
 
 <body style="background-color:#000000">
@@ -102,6 +114,7 @@
 			<!--<li onclick="InvokeMarker()"><a href="#">New Accommodation</a></li>-->
 			
 			<li><a href="#">Further links</a></li>
+			<li onclick="startButton(event)"><a href="#">Start Speech Control</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -206,6 +219,17 @@
 	<button type="button" onclick="clearRoomDetails()">Clear</button>		
 	<br><br>
 </div>
+
+
+ 
+              
+
+
+
+
+
+
+
 
 </div>
  </div>
@@ -321,8 +345,62 @@
  
 <!-- Flat Details Sidebar-->
  <div id="sidebar_detail"> 
-	<br> <b><font size=4px>Choose the attributes, you want to use for the query:  </b></font>
-	<br>
+<h2>Accomodation details:</h2>
+<form>
+  <fieldset>
+    <legend>Address</legend>
+    <table>
+      <tr>
+        <td><b>Street:</b></td>
+        <td><div id="street"> </div></td>
+      </tr><tr>
+        <td><b>Zip:</b></td>
+        <td><div id="zip"> </div></td>
+      </tr><tr>
+        <td><b>City:</b></td>
+        <td><div id="city"> </div></td>
+      </tr>
+    </table>
+  </fieldset>
+  <fieldset>
+    <legend>Description</legend>
+    <table>
+      <tr>
+        <td><b>Type:</b></td>
+        <td><div id="type"> </div></td>
+      </tr><tr>
+        <td><b>Price:[ € ]</b></td>
+        <td><div id="price"> </div></td>
+      </tr><tr>
+        <td><b>Size:[ m² ]</b></td>
+        <td><div id="area"> </div></td>
+      </tr><tr>
+        <td><b>Rooms:</b></td>
+        <td><div id="rooms"> </div></td>
+      </tr><tr>
+        <td><b>Fellow lodger:</b></td>
+        <td><div id="fellowlodger"> </div></td>
+      </tr><tr>
+        <td><b>Available:</b></td>
+        <td><div id="moveindate"> </div></td>
+      </tr>
+    </table>
+  </fieldset>
+  <fieldset>
+    <legend>Additional Information</legend>
+    <table>
+	<tr>
+        <td><b>Information:</b></td>
+        <td><div id="information"> </div></td>
+      </tr><tr>
+        <td><b>Contacts:</b></td>
+        <td><div id="contacts"> Tel: 0000/0000</div></td>
+		<td><div id="contacts2"> Test@Test.de</div></td>
+      </tr>
+	  </table>
+  </fieldset>
+   
+</form>
 	
 	
 	</div> 
@@ -333,8 +411,28 @@
 
 <script>
 
+
+
+//Speech
+   function startButton(event) {
+            final_transcript = '';
+            recognition.start();
+        }
+
+
+
+
+
+
+
+
+
+
 //create map
-var map = L.map('map').setView([51.9604,7.6197], 14);
+var map = new L.Map('map', {
+            //crs: L.CRS.EPSG3857,
+            center: [51.95442, 7.62709],
+            zoom: 14});
 
 //sidebar
 var sidebar = L.control.sidebar('sidebar', {
@@ -358,6 +456,17 @@ var AddAccomodationsidebar = L.control.sidebar('AddAccomodationsidebar', {
 
 var insertObservationSidebar = L.control.sidebar('InsertObservationSidebar', {position: 'right'});
 
+
+
+
+
+
+
+
+
+
+
+
 //observation sidebar
 var obs_sidebar = L.control.sidebar('observation_sidebar', {
     position: 'right'
@@ -376,51 +485,7 @@ sidebar.show();
 }
 
 
-//
-
-//Adding WFS Layer by JSON Format
-
-	var myLayer = new L.geoJson(null,{
-onEachFeature: function 
-(feature, layer) 
-{
-
-
-//'Street:'+feature.properties.Street+
-//'<br>Rooms:'+feature.properties.rooms+'<br><a onclick="MyFunction()">See details</a>'
-
-
-layer.bindPopup('Street:'+feature.properties.Street+
-'<br>Rooms:'+feature.properties.rooms+'<br><a onclick="MyFunction()">See details</a>'
-);},
-
-
-
- pointToLayer: function(feature, latlng) {
-        return new L.marker(latlng, {icon: L.AwesomeMarkers.icon({icon: 'home', prefix: 'fa', markerColor: 'green', spin:false}) });
-		return new L.CircleMarker(latlng, {radius: 10, fillOpacity: 0.85});
-    },
-
-
- 
-}).addTo(map);
-
-
-
-/*
-L.geoJson(geoJson, {
-    pointToLayer: function (feature, latlng) {
-        return L.marker(latlng, 
-            {icon: L.AwesomeMarkers.icon({icon: 'spinner', prefix: 'fa', markerColor: 'red', spin:true})};
-    }
-
-	
-	}).addTo(map);
-
-
-*/
-
-
+//function to get all the data from the WFS/Json
 
 function loadGeoJson(data) {
 myLayer.addData(data); 
@@ -441,171 +506,11 @@ $.ajax({
 }
 
 
-var layer1=L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
-+' contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,'
-+'Imagery &copy <a href="http://cloudmade.com">CloudMade</a>',
-    maxZoom: 18
-});
-
-layer1.addTo(map);
 
 
 
+//Query by filter
 
-		
-//OSM maps one as overlay and one base layer 
-var osmUrl='http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
-var osmAttrib='Map data &copy; OpenStreetMap contributors';
-var layerOSM=L.tileLayer(osmUrl, {minZoom: 0, maxZoom: 18, attribution: osmAttrib});
-var layerOSMtransparent=L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy<a href="www.openstretmap.org/copyright ">OpenStreetMap</a> contributors',
-	opacity:0.5,
-    format: 'image/png',
-	
-});
-//Layers of Geobasis NRW: http://www.bezreg-koeln.nrw.de/brk_internet/organisation/abteilung07/produkte/nrwatlas/index.html 
-//                          (website which provides different Web Map Service (WMS)-URLs)
-var layerDTK10_pan=L.tileLayer.wms('http://www.wms.nrw.de/geobasis/wms_nw_dtk10', {
-   attribution: '| &copy Geobasis NRW 2013',
-	layers: 'NW_DTK10_pan',
-    format: 'image/png',
-    transparent: true,
-	opacity:0.4	
-});
-var layerDTK10=L.tileLayer.wms('http://www.wms.nrw.de/geobasis/wms_nw_dtk10', {
-     attribution: '| &copy Geobasis NRW 2013',
-	layers: 'nw_dtk10_pan,nw_dtk10_res,NW_DTK10_col,WMS_NW_DTK10',
-    format: 'image/png',
-    transparent: true
-});
-//layer of the different districts
-var layerDVG=L.tileLayer.wms('http://www.wms.nrw.de/geobasis/wms_nw_dvg', {
-     attribution: '| &copy Geobasis NRW 2013',
-	layers: 'WMS_NW_DVG',
-    format: 'image/png',
-    transparent: true,
-	opacity:0.5
-});
-var layerDGK5=L.tileLayer.wms('http://www.wms.nrw.de/geobasis/wms_nw_dgk5', {
- attribution: '| &copy Geobasis NRW 2013',
-	layers: 'WMS_NW_DGK5',
-    format: 'image/png',
-    transparent: true,
-	opacity:0.5
-});
-//Orthophoto layer
-var layerOrtho = L.tileLayer.wms('http://www.wms.nrw.de/geobasis/wms_nw_dop40', {
-    layers: 'WMS_NW_DOP40',
-    format: 'image/png',
-	version:'1.3.0',
-    attribution: '| &copy Geobasis NRW 2013'
-});
-//The map which is visualized when you get on the website.
-layerOSM.addTo(map);
-
-//Map control: Layer switcher
-var baseMaps={ "OSM": layerOSM,
-               "arial view": layerOrtho,
-			   "DTK10":layerDTK10
-               };
-var overlapMaps={"OSM":layerOSMtransparent,
-                  "DVG":layerDVG,
-				  "DTK10_pan":layerDTK10_pan,
-				  "DGK5":layerDGK5};
-var control=L.control.layers(baseMaps,overlapMaps,{position:'bottomleft'}).addTo(map);
-
-//miniMap
-	var osm2 = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 13, attribution: osmAttrib });
-	var miniMap = new L.Control.MiniMap(osm2, { toggleDisplay: true }).addTo(map);
-
-//measure Control 
-	L.Control.measureControl().addTo(map);
-	
-	
-//drawing tool
-// Initialise the FeatureGroup to store editable layers
-var drawnItems = new L.FeatureGroup();
-map.addLayer(drawnItems);
-// Set the title to show on the polygon button
-		L.drawLocal.draw.toolbar.buttons.marker = 'Add New Accommodation';
-
-// Initialise the draw control and pass it the FeatureGroup of editable layers
-
-
-
-
-function MyFunction(f){
-
-sidebar_detail.show();	
-
-}
-
-var drawControl = new L.Control.Draw({
-    
-	draw: {
-			polyline: false,
-			polygon:false,
-			rectangle:false,
-			circle:false,
-			marker:{icon: L.AwesomeMarkers.icon({icon: 'home', prefix: 'fa', markerColor: 'blue', spin:false})},
-			}
-});
-map.addControl(drawControl);
-
-map.on('draw:created', function (e) {
-    var type = e.layerType,
-        layer = e.layer;
-
-    if (type === 'marker') {
-        // Do marker specific actions
-		var coordinates = layer.toGeoJSON().geometry.coordinates;
-		var coord = coordinates.toString();
-				
-		InsertObservation(coord);
-		//AddAccomod(coord);
-    }
-
-    // Do whatever else you need to. (save to db, add to map etc)
-    map.addLayer(layer);
-});
-
-
-	
-//getlocation
-map.locate({setView: true, maxZoom: 16});
-
-function mylocation()
-{
-navigator.geolocation.getCurrentPosition(GetLocation)
-}
-
-function GetLocation(location){
-lat=location.coords.latitude;
-lon=location.coords.longitude;
-	
-	alert(lat);
-	alert(lon);
-}
-
-function onLocationFound(e) {
-    var radius = e.accuracy / 2;
-
-    L.marker(e.latlng,{icon: L.AwesomeMarkers.icon({icon: 'spinner', prefix: 'fa', markerColor: 'red', spin:true}) }).addTo(map)
-        .bindPopup("You are within " + radius + " meters from this point. Do you want to start a query with this location?").openPopup();
-
-    L.circle(e.latlng, radius).addTo(map);
-	
-	lat=e.coords.latitude;
-	lon=e.coords.longitude;
-	
-}
-
-map.on('locationfound', onLocationFound);
-
-function onLocationError(e) {
-    alert(e.message);
-}
 
 function initialvariables(){
 	qsizemin=-1;
@@ -773,6 +678,9 @@ $.ajax({
 
 map.on('locationerror', onLocationError);
 
+
+// Add a marker
+
 //-----------------------
 function AddAccomod(Coord){
 	AddAccomodationsidebar.show();
@@ -800,9 +708,9 @@ function InsertObservation(coordinate)	{
 function InvokeMarker(Coord){
 	new L.Draw.Marker(map, drawControl.options.marker).enable( )// to invoke draw Marker command 
 }
-//-------------------------
 
 
+//???
 function Observation(){
 /*
 
@@ -818,6 +726,7 @@ function Observation(){
 	*/
 }
 
+// Functions for adding new flats by formular 
 function addRoomDetails()	{		
 					
 	var getUrl = "submit.php?";
@@ -869,7 +778,502 @@ function clearRoomDetails()	{
 
 
 
-	</script>
+
+
+
+
+//
+
+// function for the sidebar to display more details
+
+ 
+
+
+// get the data from an point from the each feature function and display it in the sidebar
+
+function MyFunction(name){
+
+
+//alert(name);
+var array = name.split(',')
+
+var street_space=array[10].replace(/_/g, ' ');
+
+var information_space=array[6].replace(/_/g, ' ');
+
+document.getElementById("street").innerHTML=street_space;
+document.getElementById("zip").innerHTML=array[3];
+document.getElementById("city").innerHTML=array[2];
+document.getElementById("type").innerHTML=array[7];
+document.getElementById("price").innerHTML=array[0];
+document.getElementById("rooms").innerHTML=array[4];
+document.getElementById("area").innerHTML=array[5];
+document.getElementById("fellowlodger").innerHTML=array[8];
+document.getElementById("moveindate").innerHTML=array[9];
+document.getElementById("information").innerHTML=information_space;
+
+
+
+sidebar_detail.show();
+ 
+}
+
+
+
+
+
+//Adding WFS Layer by JSON Format
+
+	var myLayer = new L.geoJson(null,{
+onEachFeature: function 
+(feature, layer) 
+{
+
+
+//'Street:'+feature.properties.Street+
+//'<br>Rooms:'+feature.properties.rooms+'<br><a onclick="MyFunction()">See details</a>'
+
+
+var information=feature.properties.information.replace(/ /g, '_');
+var information2=information.replace(/,/g, '.');
+var Street=feature.properties.Street.replace(/ /g, '_');
+var movein2=feature.properties.movein_date.toString();
+var movein = movein2.substr(0, movein2.length-1); 
+
+layer.bindPopup('Street:'+feature.properties.Street+
+'<br>Rooms:'+feature.properties.rooms+'<br>Type:'+feature.properties.type+'<br>Price:'+feature.properties.price+'<br>Available from:'+movein+'<br><a name='+feature.properties.price+','+feature.properties.id+','+feature.properties.city+','+feature.properties.zip+','+feature.properties.rooms+','+feature.properties.area+','+information2+','+feature.properties.type+','+feature.properties.fellowlodger+','+movein+','+Street+' onclick="MyFunction(name)">See details</a>'
+
+);
+
+
+
+
+},
+
+
+
+ pointToLayer: function(feature, latlng) {
+        return new L.marker(latlng, {icon: L.AwesomeMarkers.icon({icon: 'home', prefix: 'fa', markerColor: 'green', spin:false}) });
+		return new L.CircleMarker(latlng, {radius: 10, fillOpacity: 0.85});
+    },
+
+
+ 
+}).addTo(map);
+/*
+L.marker.click( function(e) {
+    L.marker.markerColor= 'red';
+});
+*/
+/*
+L.geoJson(geoJson, {
+    pointToLayer: function (feature, latlng) {
+        return L.marker(latlng, 
+            {icon: L.AwesomeMarkers.icon({icon: 'spinner', prefix: 'fa', markerColor: 'red', spin:true})};
+    }
+
+	
+	}).addTo(map);
+
+
+*/
+
+
+
+
+
+
+var layer1=L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
++' contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,'
++'Imagery &copy <a href="http://cloudmade.com">CloudMade</a>',
+    maxZoom: 18
+});
+
+layer1.addTo(map);
+
+
+
+
+		
+//OSM maps one as overlay and one base layer 
+var osmUrl='http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
+var osmAttrib='Map data &copy; OpenStreetMap contributors';
+var layerOSM=L.tileLayer(osmUrl, {minZoom: 0, maxZoom: 18, attribution: osmAttrib});
+var layerOSMtransparent=L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy<a href="www.openstretmap.org/copyright ">OpenStreetMap</a> contributors',
+	opacity:0.5,
+    format: 'image/png',
+	
+});
+//Layers of Geobasis NRW: http://www.bezreg-koeln.nrw.de/brk_internet/organisation/abteilung07/produkte/nrwatlas/index.html 
+//                          (website which provides different Web Map Service (WMS)-URLs)
+var layerDTK10_pan=L.tileLayer.wms('http://www.wms.nrw.de/geobasis/wms_nw_dtk10', {
+   attribution: '| &copy Geobasis NRW 2013',
+	layers: 'NW_DTK10_pan',
+    format: 'image/png',
+    transparent: true,
+	opacity:0.4	
+});
+var layerDTK10=L.tileLayer.wms('http://www.wms.nrw.de/geobasis/wms_nw_dtk10', {
+     attribution: '| &copy Geobasis NRW 2013',
+	layers: 'nw_dtk10_pan,nw_dtk10_res,NW_DTK10_col,WMS_NW_DTK10',
+    format: 'image/png',
+    transparent: true
+});
+//layer of the different districts
+var layerDVG=L.tileLayer.wms('http://www.wms.nrw.de/geobasis/wms_nw_dvg', {
+     attribution: '| &copy Geobasis NRW 2013',
+	layers: 'WMS_NW_DVG',
+    format: 'image/png',
+    transparent: true,
+	opacity:0.5
+});
+var layerDGK5=L.tileLayer.wms('http://www.wms.nrw.de/geobasis/wms_nw_dgk5', {
+ attribution: '| &copy Geobasis NRW 2013',
+	layers: 'WMS_NW_DGK5',
+    format: 'image/png',
+    transparent: true,
+	opacity:0.5
+});
+//Orthophoto layer
+var layerOrtho = L.tileLayer.wms('http://www.wms.nrw.de/geobasis/wms_nw_dop40', {
+    layers: 'WMS_NW_DOP40',
+    format: 'image/png',
+	version:'1.3.0',
+    attribution: '| &copy Geobasis NRW 2013'
+});
+
+// Noisemap
+
+ var laerm_night = new L.TileLayer.WMS("https://www.wms.nrw.de/umwelt/laerm", {
+            layers: 'STR_NGT',
+            format: 'image/png',
+            crs: L.CRS.EPSG4326,
+            version: '1.3.0',
+            transparent: true,
+            opacity: 0.5
+        });
+
+var laerm_24 = new L.TileLayer.WMS("https://www.wms.nrw.de/umwelt/laerm", {
+            layers: 'STR_DEN',
+            format: 'image/png',
+            crs: L.CRS.EPSG4326,
+            version: '1.3.0',
+            transparent: true,
+            opacity: 0.5
+        });
+		
+var leisure = new L.TileLayer.WMS("http://www.wms.nrw.de/geobasis/wms_nw_fzk", {
+            layers: 'nw_fzk',
+            format: 'image/png',
+            //crs: L.CRS.EPSG4326,
+            version: '1.1.1',
+            transparent: true,
+            opacity: 0.5
+        });
+		
+//The map which is visualized when you get on the website.
+layerOSM.addTo(map);
+
+//Map control: Layer switcher
+var baseMaps={ "OSM": layerOSM,
+               "arial view": layerOrtho,
+			   "DTK10":layerDTK10
+               };
+var overlapMaps={"OSM":layerOSMtransparent,
+                  "DVG":layerDVG,
+				  "DTK10_pan":layerDTK10_pan,
+				  "DGK5":layerDGK5,
+				  "NoiseStreet_Night":laerm_night,
+                  "NoiseStreet_24h":laerm_24,
+				  "Leisure_Cadastre":leisure
+				  };
+
+var control=L.control.layers(baseMaps,overlapMaps,{position:'bottomleft'}).addTo(map);
+
+
+
+
+
+
+//miniMap
+	var osm2 = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 13, attribution: osmAttrib });
+	var miniMap = new L.Control.MiniMap(osm2, { toggleDisplay: true }).addTo(map);
+
+//measure Control 
+	L.Control.measureControl().addTo(map);
+	
+	
+//drawing tool
+// Initialise the FeatureGroup to store editable layers
+var drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+// Set the title to show on the polygon button
+		L.drawLocal.draw.toolbar.buttons.marker = 'Add New Accommodation';
+
+// Initialise the draw control and pass it the FeatureGroup of editable layers
+
+
+
+
+
+var drawControl = new L.Control.Draw({
+    
+	draw: {
+			polyline: false,
+			polygon:false,
+			rectangle:false,
+			circle:false,
+			marker:{icon: L.AwesomeMarkers.icon({icon: 'home', prefix: 'fa', markerColor: 'blue', spin:false})},
+			}
+});
+map.addControl(drawControl);
+
+map.on('draw:created', function (e) {
+    var type = e.layerType,
+        layer = e.layer;
+
+    if (type === 'marker') {
+        // Do marker specific actions
+		var coordinates = layer.toGeoJSON().geometry.coordinates;
+		var coord = coordinates.toString();
+				
+		InsertObservation(coord);
+		//AddAccomod(coord);
+    }
+
+    // Do whatever else you need to. (save to db, add to map etc)
+    map.addLayer(layer);
+});
+
+
+	
+//getlocation
+map.locate({setView: true, maxZoom: 16});
+
+function mylocation()
+{
+navigator.geolocation.getCurrentPosition(GetLocation)
+}
+
+function GetLocation(location){
+lat=location.coords.latitude;
+lon=location.coords.longitude;
+	
+	alert(lat);
+	alert(lon);
+}
+
+function onLocationFound(e) {
+    var radius = e.accuracy / 2;
+
+    L.marker(e.latlng,{icon: L.AwesomeMarkers.icon({icon: 'spinner', prefix: 'fa', markerColor: 'red', spin:true}) }).addTo(map)
+        .bindPopup("You are within " + radius + " meters from this point. Do you want to start a query with this location?").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+	
+	//lat=e.coords.latitude;
+	//lon=e.coords.longitude;
+	
+}
+
+map.on('locationfound', onLocationFound);
+
+function onLocationError(e) {
+    alert(e.message);
+}
+
+var centerPoint = new L.LatLng(51.95442, 7.62709);
+
+//-------------------------
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////Voice Recognition Part//////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var recognition = new webkitSpeechRecognition();
+var recognizing = false;
+var final_transcript = '';
+var interim_transcript = '';
+
+recognition.lang = "en-BE";
+recognition.continuous = true; // keep processing input until stopped
+recognition.interimResults = true; // show interim results
+//recognition.lang = $("#select_language").val(); // specify the language
+//console.log("Dialect =" + recognition.lang);
+recognition.onresult = function (event) {
+    // Assemble the transcript from the array of results
+    //recognition.lang = $("#select_language").val(); // specify the language from drop down box
+	console.log("Dialect =" + recognition.lang);
+	for (var i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+            final_transcript = event.results[i][0].transcript;
+        } else {
+            interim_transcript = event.results[i][0].transcript;
+        }
+    }
+
+    console.log("interim: " + interim_transcript);
+    console.log("final: " + final_transcript);
+
+    // update the web page
+    if (final_transcript.length > 0) {
+        $('#transcript').html(final_transcript);
+        $('#transcript1').html(final_transcript);
+    }
+
+    if (interim_transcript.length > 0) {
+        $('#interim').html(interim_transcript);
+        $('#interim1').html(interim_transcript);
+    }
+
+
+    if (interim_transcript.length > 0) {
+        console.log("Active element:" + document.activeElement.id)
+        switch (document.activeElement.id) {
+
+        case "pointname":
+            var content = $("#pointname").val();
+            $("#pointname").val(capitalize(content.replace(final_transcript, "") + final_transcript));
+            final_transcript = "";
+            break;
+
+        case "pointdes":
+            var content = $("#pointdes").val();
+            $("#pointdes").val(capitalize(content.replace(final_transcript, "") + final_transcript));
+            final_transcript = "";
+            break;
+
+        case "linename":
+            var content = $("#linename").val();
+            $("#linename").val(capitalize(content.replace(final_transcript, "") + final_transcript));
+            final_transcript = "";
+            break;
+
+        case "linedes":
+            var content = $("#linedes").val();
+            $("#linedes").val(capitalize(content.replace(final_transcript, "") + final_transcript));
+            final_transcript = "";
+            break;
+
+        case "citizenname":
+            var content = $("#citizenname").val();
+            $("#citizenname").val(capitalize(content.replace(final_transcript, "") + final_transcript));
+            final_transcript = "";
+            break;
+
+        case "usercomment":
+            var content = $("#usercomment").val();
+            $("#usercomment").val(capitalize(content.replace(final_transcript, "") + final_transcript));
+            final_transcript = "";
+            break;
+        }
+    }
+
+    // no speech commands from the input fields should not trigger map actions
+    if (document.activeElement.id != ("usercomment"||"citizenname"||"linedes"||"linename"||"pointdes"||"pointname")) {
+
+    // handling commands
+
+    //////////////////////////////////////////////////////////
+    /////Start using navigation controls//////////////////////
+    //////////////////////////////////////////////////////////
+    if (final_transcript.indexOf("zoom in") >= 0) {
+       /* $("#command_animation").html("zoom in").css({
+            'fontSize': '12pt'
+        }).animate({
+                fontSize: '13em'
+            }, 1100,
+            function () {
+                $("#command_animation").html("");
+            });*/
+        map.zoomIn(1);
+        console.log("Zoomed in");
+        final_transcript = '';
+    }
+
+    if (final_transcript.indexOf("zoom out") >= 0) {
+     /*   $("#command_animation").html("zoom out").css('fontSize', '13em').animate({
+                fontSize: '12pt'
+            }, 1100,
+            function () {
+                $("#command_animation").html("");
+            });*/
+        map.zoomOut(1);
+        console.log("Zoomed out");
+        final_transcript = '';
+    }
+
+    if (final_transcript.indexOf("left") >= 0) {
+        centerPoint = map.getCenter();
+        var m = (map.getBounds().getEast() - map.getBounds().getWest()) / 4;
+        centerPoint.lng -= Math.abs(m);
+      /*  $("#").html("left ").css('fontSize', '13em').animate({
+                'left': '-500px'
+            }, 1100,
+            function () {
+                $("#command_animation").html("").css('left', '45%');
+            });*/
+        map.panTo(centerPoint);
+        console.log("Panned Left by " + Math.abs(m));
+        final_transcript = '';
+    }
+
+    if (final_transcript.indexOf("right") >= 0) {
+        centerPoint = map.getCenter();
+        var m = (map.getBounds().getEast() - map.getBounds().getWest()) / 4;
+        centerPoint.lng += Math.abs(m);
+       /* $("#command_animation").html("right").css({
+            'fontSize': '13em'
+        }).animate({
+                'left': '100%'
+            }, 1100,
+            function () {
+                $("#command_animation").html("").css('left', '45%');
+            });*/
+        map.panTo(centerPoint);
+        console.log("Panned right by " + Math.abs(m));
+        final_transcript = '';
+    }
+
+    if (final_transcript.indexOf("up") >= 0) {
+        centerPoint = map.getCenter();
+        var m = (map.getBounds().getNorth() - map.getBounds().getSouth()) / 4;
+        centerPoint.lat += m;
+       /* $("#command_animation").html("up").css('fontSize', '13em').animate({
+                'top': '-250px'
+            }, 1100,
+            function () {
+                $("#command_animation").html("").css('top', '50%');
+            });*/
+        map.panTo(centerPoint);
+        console.log("Panned up by " + Math.abs(m));
+        final_transcript = '';
+    }
+
+    if (final_transcript.indexOf("down") >= 0) {
+        centerPoint = map.getCenter();
+        var m = (map.getBounds().getNorth() - map.getBounds().getSouth()) / 4;
+        centerPoint.lat -= m;
+       /* $("#command_animation").html("down").css('fontSize', '13em').animate({
+                'top': '500px'
+            }, 1100,
+            function () {
+                $("#command_animation").html("").css('top', '50%');
+            });*/
+        map.panTo(centerPoint);
+        console.log("Panned down by " + Math.abs(m));
+        final_transcript = '';
+    }
+   }
+}
+
+
+
+
+
+
+
+</script>
 </div>
 </div>
 	</body>
